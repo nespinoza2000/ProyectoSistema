@@ -1,0 +1,22 @@
+{% extends "components/layout.html" %}
+
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<div class="row m-sm-5 m-3">
+  <h1 class="col">Bienvenido</h1>
+</div>
+
+<section class="row justify-content-center">
+  <form method="post" action="/user" class="col-sm-5 col-10"> <!--No cambiar el method de post a get-->
+    <div class="mb-3">
+      <label for="exampleInputUsername" class="form-label">Usuario</label>
+      <input name="username" type="text" class="form-control" id="exampleInputUsername" required />
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+      <input name="password" type="password" class="form-control" id="exampleInputPassword1" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Iniciar</button>
+  </form>
+</section>
+{% endblock %}

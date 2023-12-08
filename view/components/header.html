@@ -1,0 +1,56 @@
+{% block header %}
+<header> <!--Etiqueta de cabecera-->
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        {% if not data_user %}
+        <!--Esta linea de comando hace desaparecer las etiquetas que contienen Iniciar y Registrarse-->
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Iniciar Sesion</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="signup">Registrarse</a>
+        </li>
+        {% endif %}
+        <!--Despues de este comentario deben aparecer estas opciones-->
+        {% if data_user %} <!--Si se logea el usuario, deberian aparecer estas opciones en la barra de navegacion-->
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Menu<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Servicios</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ver listas
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/verMat">Ver lista de Materiales</a></li>
+            <li><a class="dropdown-item" href="/verCliente">Ver lista de Clientes</a></li>
+            <li><a class="dropdown-item" href="#">Ver lista de Proveedores</a></li>
+            <li><a class="dropdown-item" href="#">Ver lista de Alquileres</a></li>
+          </ul>
+        </li>
+        <!-- Example Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Registrar Operaciones
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/registrarMat">Registrar Materiales</a></li>
+            <li><a class="dropdown-item" href="/registrarCliente">Registrar Clientes</a></li>
+            <li><a class="dropdown-item" href="/registrarPro">Registrar Proveedores</a></li>
+            <li><a class="dropdown-item" href="#">Registrar Alquileres</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/">Cerrar Sesion</a>
+        </li>
+        <!-- End of Example Dropdown -->
+        {% endif %}
+      </ul>
+    </div>
+    </div>
+  </nav>
+</header>
+{% endblock %}

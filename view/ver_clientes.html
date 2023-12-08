@@ -1,0 +1,23 @@
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Nombre Cliente</th>
+            <th scope="col">RUC</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.NombreCliente }}</td>
+            <td>{{ cliente.RUC }}</td>
+            <td>
+                <a href="#" class="btn btn-success">Editar</a>
+                <a href="#" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

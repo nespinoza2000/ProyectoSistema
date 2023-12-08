@@ -1,0 +1,46 @@
+{% extends "components/layout.html" %}
+
+{% block title %}Registrarse{% endblock %}
+{% block content %}
+<div class="row m-md-5 m-3">
+  <h1 class="col">Registrarse</h1>
+</div>
+
+<form method="post" action="/data_processing" class="row g-3 mx-sm-5 mx-2">
+  <div class="col-md-4">
+    <label for="validationDefault01" class="form-label">Nombre</label>
+    <input name="firstname" type="text" class="form-control" id="validationDefault01" required />
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefault02" class="form-label">Apellido</label>
+    <input name="lastname" type="text" class="form-control" id="validationDefault02" required />
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefaultUsername" class="form-label">Usuario</label>
+    <div class="input-group">
+      <span class="input-group-text" id="inputGroupPrepend2">@</span>
+      <input name="username" type="text" class="form-control" id="validationDefaultUsername"
+        aria-describedby="inputGroupPrepend2" required />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefault04" class="form-label">Contraseña</label>
+    <input name="password" type="password" class="form-control" id="validationDefault04" required />
+  </div>
+  <!--<div class="col-md-3">
+      <label for="validationDefault05" class="form-label">Seleccion</label>
+      <select name="country" class="form-select" id="validationDefault04" required>
+        <option selected disabled value="">Elegir Pais</option>
+        <option value="ar">Argentina</option>
+        <option value="can">Canada</option>
+        <option value="co">Colombia</option>
+        <option value="usa">UU.EE</option>
+        <option value="ve">Venezuela</option>
+        <option value="py">Paraguay</option>
+      </select>
+    </div>-->
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Enviar Datos</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Nombre Material</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for material in materiales %}
+        <tr>
+            <td>{{ material.NombreMaterial }}</td>
+            <td>{{ material.DescripcionMat }}</td>
+            <td>{{ material.Precio }}</td>
+            <td>{{ material.Cantidad }}</td>
+            <td>
+                <a href="#" class="btn btn-success">Editar</a>
+                <a href="#" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
