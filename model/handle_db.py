@@ -47,12 +47,27 @@ class HandleDB():
         data_cliente = self._cur.fetchall()
         return data_cliente
 
+#Para traer los datos de un solo cliente
+    def get_cliente_by_id(self, id_cliente):
+        query = "SELECT * FROM clientes WHERE ID = %s"
+        self._cur.execute(query, (id_cliente,))
+        data_cliente = self._cur.fetchone()
+        return data_cliente
+
+
 #Para hacer un insert de datos dentro de la tabla clientes
     def insert_cliente(self, data_cliente):
-        query = "INSERT INTO clientes (NombreCliente, RUC) VALUES (%s, %s)"
-        values = (data_cliente["NombreCliente"], data_cliente["RUC"])
+        query = "INSERT INTO clientes (NombreCliente, RUC, Direccion, Telefono) VALUES (%s, %s, %s, %s)"
+        values = (data_cliente["NombreCliente"], data_cliente["RUC"], data_cliente["Direccion"], data_cliente["Telefono"])
         self._cur.execute(query, values)
-        self._con.commit() 
+        self._con.commit()
+
+#Para hacer un Update de datos dentro de la informacion del cliente
+    def update_cliente(self, new_data_cliente):
+        query = "UPDATE clientes SET NombreCliente = %s, RUC = %s, Direccion = %s, Telefono = %s WHERE ID = %s"
+        values = (new_data_cliente["NombreCliente"], new_data_cliente["RUC"], new_data_cliente["Direccion"], new_data_cliente["Telefono"])
+        self._cur.execute(query, values)
+        self._con.commit()
 
     def __del__(self):
         self._con.close()

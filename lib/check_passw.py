@@ -8,7 +8,7 @@ def check_user(username, passw):
     if filter_user:
         same_passw = check_password_hash(filter_user[4], passw)
         if same_passw:
-            list_tareas = user.get_all_tareas()
+            list_tareas = user.get_all()
             return list_tareas
         else:
             return ValueError
