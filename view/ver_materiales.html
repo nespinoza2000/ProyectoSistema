@@ -13,12 +13,12 @@
     <tbody>
         {% for material in materiales %}
         <tr>
-            <td>{{ material.NombreMaterial }}</td>
-            <td>{{ material.DescripcionMat }}</td>
-            <td>{{ material.Precio }}</td>
-            <td>{{ material.Cantidad }}</td>
+            <td>{{ material[1] }}</td>
+            <td>{{ material[2] }}</td>
+            <td>{{ material[3] }}</td>
+            <td>{{ material[4] }}</td>
             <td>
-                <a href="#" class="btn btn-success">Editar</a>
+                <a href="/EditarM/{id_del_material}" class="btn btn-success">Editar</a>
                 <a href="#" class="btn btn-danger">Borrar</a>
             </td>
         </tr>

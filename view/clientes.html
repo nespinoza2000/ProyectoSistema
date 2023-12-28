@@ -1,14 +1,32 @@
+{% extends "components/layout.html" %}
 {% block content %}
-<form action="/CargarCliente" method="post">
-    <div class="form-group">
+<form action="/CargarCliente" method="post" style="justify-content: center;">
+    <h2 style="text-align: center;">Registro de Cliente</h2>
+    <div class="form-group" style="justify-content: center;">
         <label for="NombreCliente">Nombre del Cliente: </label>
-        <input type="text" class="form-control" id="NombreCliente" name="NombreCliente"
-            placeholder="Ingrese el nombre del cliente">
+        <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" placeholder="Ingrese el nombre">
     </div>
-    <div class="form-group">
-        <label for="RUC">Razon Social o RUC: </label>
-        <input type="text" class="form-control" id="RUC" name="RUC" placeholder="Ingrese el CI/RUC del cliente">
+    <div class="form-group" style="justify-content: center;">
+        <label for="RUC" style="text-align: center;">Razon Social o RUC: </label>
+        <input type="text" class="form-control" id="RUC" name="RUC" placeholder="Ingrese el RUC">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="direccion" style="text-align: center;">Direccion del cliente: </label>
+        <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la direccion">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="telefono" style="text-align: center;">Telefono del cliente: </label>
+        <input type="number" class="form-control" id="telefono" name="telefono" placeholder="Ingrese su telefono">
     </div>
     <button class="btn btn-primary">Agregar</button>
 </form>
+<script>
+    window.onload = function () {
+        var mensaje = "{{ mensaje }}";
+        if (mensaje !== "") {
+            alert(mensaje);
+        }
+        console.log(mensaje);
+    };
+</script>
 {% endblock %}
