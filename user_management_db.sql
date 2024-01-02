@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 12-10-2023 a las 05:05:25
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-01-2024 a las 02:25:39
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,73 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `IdCliente` int(11) NOT NULL,
+  `NombreCliente` varchar(30) NOT NULL,
+  `RUC` varchar(50) NOT NULL,
+  `Direccion` varchar(25) NOT NULL,
+  `Telefono` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`IdCliente`, `NombreCliente`, `RUC`, `Direccion`, `Telefono`) VALUES
+(1, 'Silvio Espinoza', '1336662-9', 'Jose Squeff 522', 971111515),
+(2, 'Raquel Insfran', '4179206', 'Rep. Argentina', 981723650),
+(3, 'Nicolas Espinoza', '4967183-9', 'Jose Squeff 522', 971875556),
+(4, 'Silvio Benjamin Espinoza', '4967185', 'Jose Squeff 522', 971443964);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `materiales`
+--
+
+CREATE TABLE `materiales` (
+  `IdMat` int(11) NOT NULL,
+  `NombreMaterial` varchar(100) NOT NULL,
+  `DescripcionMat` varchar(100) NOT NULL,
+  `Precio` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `materiales`
+--
+
+INSERT INTO `materiales` (`IdMat`, `NombreMaterial`, `DescripcionMat`, `Precio`, `Cantidad`) VALUES
+(1, 'Cables de Baja Tensión', 'El cable de baja tensión esta diseñado para transportar 1000 a 1500 V', 3000, 100);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedores`
+--
+
+CREATE TABLE `proveedores` (
+  `IdPro` int(11) NOT NULL,
+  `NombreProveedor` varchar(50) NOT NULL,
+  `CIpro` varchar(25) NOT NULL,
+  `RUC` varchar(25) NOT NULL,
+  `Direccion` varchar(25) NOT NULL,
+  `Telefono` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`IdPro`, `NombreProveedor`, `CIpro`, `RUC`, `Direccion`, `Telefono`) VALUES
+(1, 'F Machado', '1234545', '1234589-9', 'Barrio Santa Clara', 986757776);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -32,20 +99,40 @@ CREATE TABLE `users` (
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
-  `country` varchar(50) DEFAULT NULL,
-  `password_user` varchar(255) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `country`, `password_user`) VALUES
-(1, 'Anibal', 'Prado', 'Gato', 'py', 'pbkdf2:sha256:260000$Q0Y6WBXx$38db94817be8645b3e9b017bac7616fca3af16980edbf4239d0a5084b7c15ee2');
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
+(1, 'Nicolás', 'Espinoza', 'nico', 'pbkdf2:sha256:600000$12GZ3CF2$a36858a8a1f975e8527c57f57b9494011914ec6b7b13a6e27a468dd268337541'),
+(2, 'dani', 'seg', 'daniseg', 'pbkdf2:sha256:600000$1ZRcsoHW$e1db8781835714cd5bd0b283c3c6ff3bd32d4fb3a58a26f4b0324337c629e3da'),
+(3, 'Ra', 'quel', 'rq', 'pbkdf2:sha256:600000$Vrabv5mI$c1805fa7a474949a1a4e3668a34121d634d142d46470dd29866ac77c571ad45e'),
+(4, 'a', 's', 'as', 'pbkdf2:sha256:600000$jK4SnC0g$1affc05511b62a51ab96ac5abc9675aee420383bd27840e98ec2c5fd17382e29');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`IdCliente`);
+
+--
+-- Indices de la tabla `materiales`
+--
+ALTER TABLE `materiales`
+  ADD PRIMARY KEY (`IdMat`);
+
+--
+-- Indices de la tabla `proveedores`
+--
+ALTER TABLE `proveedores`
+  ADD PRIMARY KEY (`IdPro`);
 
 --
 -- Indices de la tabla `users`
@@ -59,10 +146,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de la tabla `materiales`
+--
+ALTER TABLE `materiales`
+  MODIFY `IdMat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedores`
+--
+ALTER TABLE `proveedores`
+  MODIFY `IdPro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
