@@ -1,32 +1,35 @@
 {% extends "components/layout.html" %}
 {% block content %}
+<h2 style="text-align: center;">Registro de Cliente</h2>
 <form action="/CargarCliente" method="post" style="justify-content: center;">
-    <h2 style="text-align: center;">Registro de Cliente</h2>
-    <div class="form-group" style="justify-content: center;">
-        <label for="NombreCliente">Nombre del Cliente: </label>
-        <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" placeholder="Ingrese el nombre">
+    <div class="form-group row">
+        <label for="NombreCliente" class="col-sm-2 col-form-label" style="text-align: center;">Nombre del
+            Cliente</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="NombreCliente" name="NombreCliente">
+        </div>
     </div>
-    <div class="form-group" style="justify-content: center;">
-        <label for="RUC" style="text-align: center;">Razon Social o RUC: </label>
-        <input type="text" class="form-control" id="RUC" name="RUC" placeholder="Ingrese el RUC">
+    <div class="form-group row">
+        <label for="RUC" class="col-sm-2 col-form-label" style="text-align: center;">Razon Social o RUC: </label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="RUC" name="RUC">
+        </div>
     </div>
-    <div class="form-group" style="justify-content: center;">
-        <label for="direccion" style="text-align: center;">Direccion del cliente: </label>
-        <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la direccion">
+    <div class="form-group row">
+        <label for="direccion" class="col-sm-2 col-form-label" style="text-align: center;">Direccion del cliente:
+        </label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="direccion" name="direccion">
+        </div>
     </div>
-    <div class="form-group" style="justify-content: center;">
-        <label for="telefono" style="text-align: center;">Telefono del cliente: </label>
-        <input type="number" class="form-control" id="telefono" name="telefono" placeholder="Ingrese su telefono">
+    <div class="form-group row">
+        <label for="telefono" class="col-sm-2 col-form-label" style="text-align: center;">Telefono del cliente: </label>
+        <div class="col-sm-5">
+            <input type="number" class="form-control" id="telefono" name="telefono">
+        </div>
     </div>
-    <button class="btn btn-primary">Agregar</button>
+    <div class="col-sm-5 text-center">
+        <button class="btn btn-primary">Agregar</button>
+    </div>
 </form>
-<script>
-    window.onload = function () {
-        var mensaje = "{{ mensaje }}";
-        if (mensaje !== "") {
-            alert(mensaje);
-        }
-        console.log(mensaje);
-    };
-</script>
 {% endblock %}

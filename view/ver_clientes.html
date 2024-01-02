@@ -3,7 +3,7 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">IdCliente</th>
             <th scope="col">Nombre Cliente</th>
             <th scope="col">RUC</th>
             <th scope="col">Direccion</th>
@@ -21,7 +21,7 @@
             <td>{{ cliente[4] }}</td>
             <td>
                 <a href="/EditarCliente/{{ cliente[0] }}" class="btn btn-success">Editar</a>
-                <a href="#" class="btn btn-danger">Borrar</a>
+                <a href="/BorrarCliente/{{ cliente[0] }}/delete" class="btn btn-danger">Borrar</a>
             </td>
         </tr>
         {% endfor %}

@@ -3,6 +3,7 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
+            <th scope="col">Id</th>
             <th scope="col">Nombre Material</th>
             <th scope="col">Descripcion</th>
             <th scope="col">Precio</th>
@@ -13,13 +14,14 @@
     <tbody>
         {% for material in materiales %}
         <tr>
+            <td>{{ material[0] }}</td>
             <td>{{ material[1] }}</td>
             <td>{{ material[2] }}</td>
             <td>{{ material[3] }}</td>
             <td>{{ material[4] }}</td>
             <td>
-                <a href="/EditarM/{id_del_material}" class="btn btn-success">Editar</a>
-                <a href="#" class="btn btn-danger">Borrar</a>
+                <a href="/EditarMaterial/{{ material[0] }}" class="btn btn-success">Editar</a>
+                <a href="/BorrarMaterial/{{ material[0] }}/delete" class="btn btn-danger">Borrar</a>
             </td>
         </tr>
         {% endfor %}

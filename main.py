@@ -6,7 +6,6 @@ from lib.check_passw import check_user
 from model.handle_db import HandleDB
 import mysql.connector
 
-
 app = FastAPI()
 
 template = Jinja2Templates(directory="./view")
@@ -57,17 +56,17 @@ def data_processing(
         raise HTTPException(status_code=500, detail=f"Error al crear usuario: {str(e)}")
     return RedirectResponse(url="/", status_code=302)
 
+#Desde aqui empieza todo lo referente a materiales 
 @app.get("/registrarMat")
 def registro_mat(req: Request):
     return template.TemplateResponse("materiales.html", {"request": req})
-
 
 @app.post("/CargarM")
 def cargar_mat(
     req: Request,
     nombrematerial: str = Form(...),
     desc: str = Form(...),
-    precio: float = Form(...),
+    precio: int = Form(...),
     cantidad: int = Form(...)
 ):
     data_mat = {
@@ -77,39 +76,53 @@ def cargar_mat(
         "Cantidad": cantidad
     }
     handle_db = HandleDB()
-    handle_db.insert_mat(data_mat)
+    material_registrado = handle_db.insert_mat(data_mat)
     del handle_db
-    return template.TemplateResponse("employd.html", {"request": req, "data_user": True})  #Comando para volver al menu del empleado
+    return template.TemplateResponse(
+        "employd.html", {"request": req, "data_user": True})#Comando para volver al menu del empleado
 
 @app.get("/verMat")
 def verMat(req: Request):
     handle_db = HandleDB()
     materiales = handle_db.get_all_mat()
-    print(materiales)
     return template.TemplateResponse("ver_materiales.html", {"request": req, "materiales": materiales})
 
+@app.get("/EditarMaterial/{IdMat}")
+def show_edit_material(req: Request, IdMat: int):
+    handle_db = HandleDB()
+    material = handle_db.get_material_by_id(IdMat) # Cambiar a get_material_by_id para obtener un material específico
+    del handle_db
+    return template.TemplateResponse("editar_material.html", {"request": req, "material": material})
 
-@app.get("/EditarM/{id_del_material}")
-def edit_mat(
+@app.post("/EditarMaterial/{IdMat}/update")
+def update_material(
     req: Request,
-    id_del_material: int,
+    IdMat: int,
     nombrematerial: str = Form(...),
     desc: str = Form(...),
-    precio: float = Form(...),
+    precio: int = Form(...),
     cantidad: int = Form(...)
 ):
-    n_data_mat = {
-        "id": id_del_material,
+    new_data_mat = {
         "NombreMaterial": nombrematerial,
         "DescripcionMat": desc,
         "Precio": precio,
         "Cantidad": cantidad
     }
     handle_db = HandleDB()
-    handle_db.update_mat(n_data_mat)
+    handle_db.update_material(IdMat, new_data_mat)
     del handle_db
     return RedirectResponse(url="/verMat", status_code=302)
 
+@app.get("/BorrarMaterial/{IdMat}/delete")
+def delete_material(IdMat: int):
+    handle_db = HandleDB()
+    handle_db.delete_material(IdMat)
+    del handle_db
+    return RedirectResponse(url="/verMat", status_code=302)
+#Aqui acaba toda las funcionalidades para materiales
+
+#Desde aqui empieza todo lo referente a clientes
 @app.get("/registrarCliente")  
 def registro_cli(req: Request):
     return template.TemplateResponse("clientes.html", {"request": req})
@@ -131,17 +144,9 @@ async def cargar_cli(
     handle_db = HandleDB()
     cliente_registrado = handle_db.insert_cliente(data_cliente)  # Solo una vez
     del handle_db
-
-    mensaje = ""
-    if cliente_registrado:
-        mensaje = "Un nuevo cliente ha sido registrado con éxito"
-    else:
-        mensaje = "El cliente ya existe. Por favor, registre un nuevo cliente"
-
     return template.TemplateResponse(
-        "employd.html", {"request": req, "data_user": True, "mensaje": mensaje}
+        "employd.html", {"request": req, "data_user": True}
     )
-
 
 @app.get("/verCliente")
 def verClient(req: Request):
@@ -149,30 +154,101 @@ def verClient(req: Request):
     clientes = handle_db.get_cliente()
     return template.TemplateResponse("ver_clientes.html", {"request": req, "clientes": clientes})
 
-@app.get("/EditarCliente/{id_del_cliente}")
-def show_edit_cliente(req: Request, id_del_cliente: int):
+@app.get("/EditarCliente/{IdCliente}")
+def show_edit_cliente(req: Request, IdCliente: int):
     handle_db = HandleDB()
-    cliente = handle_db.get_cliente_by_id(id_del_cliente)  # Cambiar a get_cliente_by_id para obtener un cliente específico
+    cliente = handle_db.get_cliente_by_id(IdCliente)  # Cambiar a get_cliente_by_id para obtener un cliente específico
     del handle_db
     return template.TemplateResponse("editar_cliente.html", {"request": req, "cliente": cliente})
 
-@app.post("/EditarCliente/{id_del_cliente}/update")
-def update_client(req: Request, id_del_cliente: int, NombreCliente: str = Form(...), RUC: str = Form(...), direccion: str = Form(...), telefono: int = Form(...)):
-    # Procesar la actualización del cliente
+@app.post("/EditarCliente/{IdCliente}/update")
+def update_cliente(req: Request, IdCliente: int, NombreCliente: str = Form(...), RUC: str = Form(...), Direccion: str = Form(...), Telefono: int = Form(...)):
     new_data_cliente = {
-        "id_del_cliente": id_del_cliente,
         "NombreCliente": NombreCliente,
         "RUC": RUC,
-        "Direccion": direccion,
-        "Telefono": telefono
+        "Direccion": Direccion,
+        "Telefono": Telefono
     }
     handle_db = HandleDB()
-    handle_db.update_cliente(new_data_cliente)
+    handle_db.update_cliente(IdCliente, new_data_cliente)  # Actualización del cliente con su ID correspondiente
     del handle_db
     return RedirectResponse(url="/verCliente", status_code=302)
 
+@app.get("/BorrarCliente/{IdCliente}/delete")
+def delete_cliente(IdCliente: int):
+    handle_db = HandleDB()
+    handle_db.delete_cliente(IdCliente)
+    del handle_db
+    return RedirectResponse(url="/verCliente", status_code=302)
+#Aqui acaba toda las funcionalidades para cliente
 
+#Desde aqui empieza todo lo referente a proveedores
 @app.get("/registrarPro")
-def registro_cli(req: Request):
+def registro_pro(req: Request):
     return template.TemplateResponse("proveedores.html", {"request": req})
 
+@app.post("/CargarProveedor")
+async def cargar_pro(
+    req: Request, 
+    nombrepro: str = Form(...), 
+    cipro: int = Form(...), 
+    rspro: str = Form(...), 
+    Direccion: str = Form(...), 
+    Telefono: str = Form(...)
+):
+    data_provee = {
+        "NombreProveedor": nombrepro,
+        "CIpro": cipro,
+        "RUC": rspro,
+        "Direccion": Direccion,
+        "Telefono": Telefono
+    }
+    handle_db = HandleDB()
+    proveedor_registrado = handle_db.insert_proveedor(data_provee) # Solo una vez
+    del handle_db
+    return template.TemplateResponse(
+        "employd.html", {"request": req, "data_user": True}
+    )
+
+@app.get("/verProveedor")
+def verProveedor(req: Request):
+    handle_db = HandleDB()
+    proveedores = handle_db.get_pro()
+    return template.TemplateResponse("ver_proveedores.html", {"request": req, "proveedores": proveedores})
+
+@app.get("/EditarProvee/{IdPro}")
+def show_edit_provee(req: Request, IdPro: int):
+    handle_db = HandleDB()
+    proveedor = handle_db.get_prove_by_id(IdPro)  # Cambiar a get_prove_by_id para obtener un cliente específico
+    del handle_db
+    return template.TemplateResponse("editar_proveedor.html", {"request": req, "proveedor": proveedor})
+
+@app.post("/EditarProvee/{IdPro}/update")
+def update_prove(
+    req: Request,
+    IdPro: int,
+    NombreProveedor: str = Form(...),
+    CIpro: int = Form(...),
+    RUC: str = Form(...),
+    Direccion: str = Form(...),
+    Telefono: str = Form(...),
+):
+    new_data_provee = {
+        "NombreProveedor": NombreProveedor,
+        "CIpro": CIpro,
+        "RUC": RUC,
+        "Direccion": Direccion,
+        "Telefono": Telefono,
+    }
+    handle_db = HandleDB()
+    handle_db.update_proveedor(IdPro, new_data_provee)
+    del handle_db
+    return RedirectResponse(url="/verProveedor", status_code=302)
+
+@app.get("/BorrarProvee/{IdPro}/delete")
+def delete_provee(IdPro: int):
+    handle_db = HandleDB()
+    handle_db.delete_proveedor(IdPro)
+    del handle_db
+    return RedirectResponse(url="/verProveedor", status_code=302)
+#Aqui acaba toda las funcionalidades para proveedor

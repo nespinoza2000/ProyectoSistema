@@ -34,11 +34,31 @@ class HandleDB():
         data_mat = self._cur.fetchall()
         return data_mat
 
+#Para traer los datos de un solo material
+    def get_material_by_id(self, id_material):
+        query = "SELECT * FROM materiales WHERE IdMat = %s"
+        self._cur.execute(query, (id_material,))
+        data_cliente = self._cur.fetchone()
+        return data_cliente
+
 #Para hacer un insert de datos en la tabla de materiales
     def insert_mat(self, data_mat):
         query = "INSERT INTO materiales (NombreMaterial, DescripcionMat, Precio, Cantidad) VALUES (%s, %s, %s, %s)"
         values = (data_mat["NombreMaterial"], data_mat["DescripcionMat"], data_mat["Precio"], data_mat["Cantidad"])
         self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Update de datos dentro de la informacion de los materiales
+    def update_material(self, id_material, new_data_mat):
+        query = "UPDATE materiales SET NombreMaterial = %s, DescripcionMat = %s, Precio = %s, Cantidad = %s WHERE IdMat = %s"
+        values = (new_data_mat["NombreMaterial"], new_data_mat["DescripcionMat"], new_data_mat["Precio"], new_data_mat["Cantidad"], id_material)
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de un solo material
+    def delete_material(self, id_material):
+        query = "DELETE FROM materiales WHERE IdMat = %s"
+        self._cur.execute(query, (id_material,))
         self._con.commit()
 
 #Para traer los datos del cliente
@@ -49,7 +69,7 @@ class HandleDB():
 
 #Para traer los datos de un solo cliente
     def get_cliente_by_id(self, id_cliente):
-        query = "SELECT * FROM clientes WHERE ID = %s"
+        query = "SELECT * FROM clientes WHERE IdCliente = %s"
         self._cur.execute(query, (id_cliente,))
         data_cliente = self._cur.fetchone()
         return data_cliente
@@ -63,10 +83,49 @@ class HandleDB():
         self._con.commit()
 
 #Para hacer un Update de datos dentro de la informacion del cliente
-    def update_cliente(self, new_data_cliente):
-        query = "UPDATE clientes SET NombreCliente = %s, RUC = %s, Direccion = %s, Telefono = %s WHERE ID = %s"
-        values = (new_data_cliente["NombreCliente"], new_data_cliente["RUC"], new_data_cliente["Direccion"], new_data_cliente["Telefono"])
+    def update_cliente(self, id_cliente, new_data_cliente):
+        query = "UPDATE clientes SET NombreCliente = %s, RUC = %s, Direccion = %s, Telefono = %s WHERE IdCliente = %s"
+        values = (new_data_cliente["NombreCliente"], new_data_cliente["RUC"], new_data_cliente["Direccion"], new_data_cliente["Telefono"], id_cliente)
         self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de un solo cliente
+    def delete_cliente(self, id_cliente):
+        query = "DELETE FROM clientes WHERE IdCliente = %s"
+        self._cur.execute(query, (id_cliente,))
+        self._con.commit()
+
+#Para traer los datos del proveedor
+    def get_pro(self):
+        self._cur.execute("SELECT * FROM proveedores")
+        data_provee = self._cur.fetchall()
+        return data_provee
+
+#Para traer los datos de un solo proveedor
+    def get_prove_by_id(self, id_pro):
+        query = "SELECT * FROM proveedores WHERE IdPro = %s"
+        self._cur.execute(query, (id_pro,))
+        data_prove = self._cur.fetchone()
+        return data_prove
+
+#Para hacer un insert de datos dentro de la tabla proveedores
+    def insert_proveedor(self, data_prove):
+        query = "INSERT INTO proveedores (NombreProveedor, CIpro, RUC, Direccion, Telefono) VALUES (%s, %s, %s, %s, %s)"
+        values = (data_prove["NombreProveedor"], data_prove["CIpro"], data_prove["RUC"], data_prove["Direccion"], data_prove["Telefono"])
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Update de datos dentro de la informacion del proveedor
+    def update_proveedor(self, id_pro, new_data_provee):
+        query = "UPDATE proveedores SET NombreProveedor = %s, CIpro = %s, RUC = %s, Direccion = %s, Telefono = %s WHERE IdPro = %s"
+        values = (new_data_provee["NombreProveedor"], new_data_provee["CIpro"],  new_data_provee["RUC"], new_data_provee["Direccion"], new_data_provee["Telefono"], id_pro)
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de un solo Proveedor
+    def delete_proveedor(self, id_pro):
+        query = "DELETE FROM proveedores WHERE IdPro = %s"
+        self._cur.execute(query, (id_pro,))
         self._con.commit()
 
     def __del__(self):

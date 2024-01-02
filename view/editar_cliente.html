@@ -1,23 +1,23 @@
 {% extends "components/layout.html" %}
 {% block content %}
-<form action="/EditarCliente/{{ cliente.id }}/update" method="post" style="justify-content: center;">
+<form action="/EditarCliente/{{ cliente[0] }}/update" method="post" style="justify-content: center;">
     <h2 style="text-align: center;">Actualizar datos del Cliente</h2>
     <div class="form-group" style="justify-content: center;">
         <label for="NombreCliente">Nombre del Cliente: </label>
         <input type="text" name="NombreCliente" value="{{ cliente[1] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
-        <label for="RUC" style="text-align: center;">Nueva Razon Social o RUC: </label>
+        <label for="RUC" style="text-align: center;">Nueva Razón Social o RUC: </label>
         <input type="text" name="RUC" value="{{ cliente[2] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
-        <label for="direccion" style="text-align: center;">Nueva direccion del cliente: </label>
+        <label for="direccion" style="text-align: center;">Nueva dirección del cliente: </label>
         <input type="text" name="Direccion" value="{{ cliente[3] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
-        <label for="telefono" style="text-align: center;">Nuevo telefono del cliente: </label>
+        <label for="telefono" style="text-align: center;">Nuevo teléfono del cliente: </label>
         <input type="text" name="Telefono" value="{{ cliente[4] }}">
     </div>
-    <button class="btn btn-success">Guardar Cambios</button>
+    <button type="submit" class="btn btn-success" style="justify-content: center;">Guardar Cambios</button>
 </form>
 {% endblock %}

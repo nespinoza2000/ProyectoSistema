@@ -1,0 +1,32 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre Proveedor</th>
+            <th scope="col">CI</th>
+            <th scope="col">RUC</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proveedor in proveedores %}
+        <tr>
+            <td>{{ proveedor[0] }}</td>
+            <td>{{ proveedor[1] }}</td>
+            <td>{{ proveedor[2] }}</td>
+            <td>{{ proveedor[3] }}</td>
+            <td>{{ proveedor[4] }}</td>
+            <td>{{ proveedor[5] }}</td>
+            <td>
+                <a href="/EditarProvee/{{ proveedor[0] }}" class="btn btn-success">Editar</a>
+                <a href="/BorrarProvee/{{ proveedor[0] }}/delete" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
