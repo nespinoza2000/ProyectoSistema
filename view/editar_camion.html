@@ -1,0 +1,19 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<form action="/EditarCamion/{{ camion[0] }}/update" method="post" style="justify-content: center;">
+    <h2 style="text-align: center;">Actualizar datos del Camion</h2>
+    <div class="form-group" style="justify-content: center;">
+        <label for="NroCamion">Nuevo numero del Camion</label>
+        <input type="text" name="NroCamion" value="{{ camion[1] }}">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="Marca">Nueva marca del Camion</label>
+        <input type="text" name="Marca" value="{{ camion[2] }}">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="Modelo">Nuevo modelo del Camion</label>
+        <input type="text" name="Modelo" value="{{ camion[3] }}">
+    </div>
+    <button type="submit" class="btn btn-success" style="justify-content: center;">Guardar Cambios</button>
+</form>
+{% endblock %}
