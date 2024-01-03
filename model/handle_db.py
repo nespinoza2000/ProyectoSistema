@@ -128,5 +128,38 @@ class HandleDB():
         self._cur.execute(query, (id_pro,))
         self._con.commit()
 
+#Para traer los datos del camion
+    def get_cami(self):
+        self._cur.execute("SELECT * FROM camiones")
+        data_camion = self._cur.fetchall()
+        return data_camion
+
+#Para traer los datos de un solo camion
+    def get_cami_by_id(self, id_cami):
+        query = "SELECT * FROM camiones WHERE IdCamion = %s"
+        self._cur.execute(query, (id_cami,))
+        data_camion = self._cur.fetchone()
+        return data_camion
+
+#Para hacer un insert de datos dentro de la tabla camiones
+    def insert_camion(self, data_camion):
+        query = "INSERT INTO camiones (NroCamion, Marca, Modelo) VALUES (%s, %s, %s)"
+        values = (data_camion["NroCamion"], data_camion["Marca"], data_camion["Modelo"])
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Update de datos dentro de la informacion de un camion
+    def update_camion(self, id_cami, new_data_cami):
+        query = "UPDATE camiones SET NroCamion = %s, Marca = %s, Modelo = %s WHERE IdCamion = %s"
+        values = (new_data_cami["NroCamion"], new_data_cami["Marca"], new_data_cami["Modelo"], id_cami)
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de un solo Camion
+    def delete_camion(self, id_cami):
+        query = "DELETE FROM camiones WHERE IdCamion = %s"
+        self._cur.execute(query, (id_cami,))
+        self._con.commit()
+
     def __del__(self):
         self._con.close()
