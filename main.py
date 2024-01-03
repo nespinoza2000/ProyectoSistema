@@ -219,7 +219,7 @@ def verProveedor(req: Request):
 @app.get("/EditarProvee/{IdPro}")
 def show_edit_provee(req: Request, IdPro: int):
     handle_db = HandleDB()
-    proveedor = handle_db.get_prove_by_id(IdPro)  # Cambiar a get_prove_by_id para obtener un cliente específico
+    proveedor = handle_db.get_prove_by_id(IdPro)  # Cambiar a get_prove_by_id para obtener un proveedor específico
     del handle_db
     return template.TemplateResponse("editar_proveedor.html", {"request": req, "proveedor": proveedor})
 
@@ -252,3 +252,66 @@ def delete_provee(IdPro: int):
     del handle_db
     return RedirectResponse(url="/verProveedor", status_code=302)
 #Aqui acaba toda las funcionalidades para proveedor
+
+#Desde aqui empieza todo lo referente a Camiones
+@app.get("/registrarCami")
+def registro_camion(req: Request):
+    return template.TemplateResponse("camiones.html", {"request": req})
+
+@app.post("/CargarCami")
+async def cargar_cami(
+    req: Request,
+    nrocami: str = Form(...),
+    marcacami: str = Form(...),
+    modelocami: str = Form(...)
+):
+    data_camion = {
+        "NroCamion": nrocami,
+        "Marca": marcacami,
+        "Modelo": modelocami
+    }
+    handle_db = HandleDB()
+    camion_registrado = handle_db.insert_camion(data_camion) #Solo una vez
+    del handle_db
+    return template.TemplateResponse(
+        "employd.html", {"request": req, "data_user": True}
+    )
+
+@app.get("/verCamion")
+def verCamion(req: Request):
+    handle_db = HandleDB()
+    camiones = handle_db.get_cami()
+    return template.TemplateResponse("ver_camiones.html", {"request": req, "camiones": camiones})
+
+@app.get("/EditarCamion/{IdCamion}")
+def show_edit_camion(req: Request, IdCamion: int):
+    handle_db = HandleDB()
+    camion = handle_db.get_cami_by_id(IdCamion) # Cambiar a get_cami_by_id para obtener un camion específico
+    del handle_db
+    return template.TemplateResponse("editar_camion.html", {"request": req, "camion": camion})
+
+@app.post("/EditarCamion/{IdCamion}/update")
+def update_cami(
+    req: Request,
+    IdCamion: int,
+    NroCamion: str = Form(...),
+    Marca: str = Form(...),
+    Modelo: str = Form(...)
+):
+    new_data_cami = {
+        "NroCamion": NroCamion,
+        "Marca": Marca,
+        "Modelo": Modelo
+    }
+    handle_db = HandleDB()
+    handle_db.update_camion(IdCamion, new_data_cami)
+    del handle_db
+    return RedirectResponse(url="/verCamion", status_code=302)
+
+@app.get("/BorrarCamion/{IdCamion}/delete")
+def delete_camion(IdCamion: int):
+    handle_db = HandleDB()
+    handle_db.delete_camion(IdCamion)
+    del handle_db
+    return RedirectResponse(url="/verCamion", status_code=302)
+#Aqui acaba toda las funcionalidades para camion
