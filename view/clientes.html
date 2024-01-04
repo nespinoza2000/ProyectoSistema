@@ -32,4 +32,9 @@
         <button class="btn btn-primary">Agregar</button>
     </div>
 </form>
+{% if cliente_registrado %}
+<script>
+    alert("Cliente registrado exitosamente");
+</script>
+{% endif %}
 {% endblock %}

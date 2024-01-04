@@ -14,6 +14,17 @@
         <label for="Modelo">Nuevo modelo del Camion</label>
         <input type="text" name="Modelo" value="{{ camion[3] }}">
     </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="tipo">Nuevo Estado del Camion</label>
+        <div class="col-sm-5">
+            <select class="form-control" name="Estado" id="Estado"> <!-- Cambiado a "Estado" -->
+                <option value=""> -- </option>
+                <option value="Disponible">Disponible</option>
+                <option value="Ocupado">Ocupado</option>
+                <option value="Mantenimeinto">En Mantenimiento</option>
+            </select>
+        </div>
+    </div>
     <button type="submit" class="btn btn-success" style="justify-content: center;">Guardar Cambios</button>
 </form>
 {% endblock %}
