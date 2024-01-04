@@ -79,8 +79,13 @@ class HandleDB():
     def insert_cliente(self, data_cliente):
         query = "INSERT INTO clientes (NombreCliente, RUC, Direccion, Telefono) VALUES (%s, %s, %s, %s)"
         values = (data_cliente["NombreCliente"], data_cliente["RUC"], data_cliente["Direccion"], data_cliente["Telefono"])
-        self._cur.execute(query, values)
-        self._con.commit()
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True  # Inserción exitosa
+        except Exception as e:
+            print(f"Error al insertar cliente: {str(e)}")
+            return False  # Inserción fallida
 
 #Para hacer un Update de datos dentro de la informacion del cliente
     def update_cliente(self, id_cliente, new_data_cliente):
@@ -143,15 +148,15 @@ class HandleDB():
 
 #Para hacer un insert de datos dentro de la tabla camiones
     def insert_camion(self, data_camion):
-        query = "INSERT INTO camiones (NroCamion, Marca, Modelo) VALUES (%s, %s, %s)"
-        values = (data_camion["NroCamion"], data_camion["Marca"], data_camion["Modelo"])
+        query = "INSERT INTO camiones (NroCamion, Marca, Modelo, Estado) VALUES (%s, %s, %s, %s)"
+        values = (data_camion["NroCamion"], data_camion["Marca"], data_camion["Modelo"], data_camion["Estado"])
         self._cur.execute(query, values)
         self._con.commit()
 
 #Para hacer un Update de datos dentro de la informacion de un camion
     def update_camion(self, id_cami, new_data_cami):
-        query = "UPDATE camiones SET NroCamion = %s, Marca = %s, Modelo = %s WHERE IdCamion = %s"
-        values = (new_data_cami["NroCamion"], new_data_cami["Marca"], new_data_cami["Modelo"], id_cami)
+        query = "UPDATE camiones SET NroCamion = %s, Marca = %s, Modelo = %s, Estado = %s WHERE IdCamion = %s"
+        values = (new_data_cami["NroCamion"], new_data_cami["Marca"], new_data_cami["Modelo"], new_data_cami["Estado"], id_cami)
         self._cur.execute(query, values)
         self._con.commit()
 
