@@ -18,11 +18,16 @@ def root(req: Request):
 def root(req: Request):
     return template.TemplateResponse("index.html", {"request": req})
 
+@app.get("/employd.html")
+async def employd_page(req: Request):
+    # Lógica para mostrar la página Employd.html
+    return template.TemplateResponse("employd.html", {"request": req})
 
 @app.get("/signup", response_class=HTMLResponse)
 def signup(req: Request):
     return template.TemplateResponse("signup.html", {"request": req})
 
+#No tocar este fragmento de codigo
 @app.post("/user", response_class=HTMLResponse)
 def user(req: Request, username: str = Form(), password: str = Form()):
         verify = check_user(username, password)
@@ -30,7 +35,6 @@ def user(req: Request, username: str = Form(), password: str = Form()):
             return template.TemplateResponse(
                 "employd.html", {"request": req, "data_user": verify}
             )
-
 
 #No tocar esta linea de codigo
 @app.post("/data_processing")
@@ -144,9 +148,12 @@ async def cargar_cli(
     handle_db = HandleDB()
     cliente_registrado = handle_db.insert_cliente(data_cliente)  # Solo una vez
     del handle_db
-    return template.TemplateResponse(
-        "employd.html", {"request": req, "data_user": True}
+    print(cliente_registrado)
+    response = template.TemplateResponse(
+        "cliente_registrado.html", {"request": req, "data_user": True, "cliente_registrado": cliente_registrado}
     )
+    response.set_cookie(key="session", value="some_session_token")
+    return response
 
 @app.get("/verCliente")
 def verClient(req: Request):
@@ -263,12 +270,14 @@ async def cargar_cami(
     req: Request,
     nrocami: str = Form(...),
     marcacami: str = Form(...),
-    modelocami: str = Form(...)
+    modelocami: str = Form(...),
+    tipo: str = Form(...)
 ):
     data_camion = {
         "NroCamion": nrocami,
         "Marca": marcacami,
-        "Modelo": modelocami
+        "Modelo": modelocami,
+        "Estado": tipo
     }
     handle_db = HandleDB()
     camion_registrado = handle_db.insert_camion(data_camion) #Solo una vez
@@ -296,12 +305,14 @@ def update_cami(
     IdCamion: int,
     NroCamion: str = Form(...),
     Marca: str = Form(...),
-    Modelo: str = Form(...)
+    Modelo: str = Form(...),
+    Estado: str = Form(...)
 ):
     new_data_cami = {
         "NroCamion": NroCamion,
         "Marca": Marca,
-        "Modelo": Modelo
+        "Modelo": Modelo,
+        "Estado": Estado
     }
     handle_db = HandleDB()
     handle_db.update_camion(IdCamion, new_data_cami)
