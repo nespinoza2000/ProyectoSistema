@@ -45,8 +45,13 @@ class HandleDB():
     def insert_mat(self, data_mat):
         query = "INSERT INTO materiales (NombreMaterial, DescripcionMat, Precio, Cantidad) VALUES (%s, %s, %s, %s)"
         values = (data_mat["NombreMaterial"], data_mat["DescripcionMat"], data_mat["Precio"], data_mat["Cantidad"])
-        self._cur.execute(query, values)
-        self._con.commit()
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True # Inserción exitosa
+        except Exception as e:
+            print(f"Error al registrar un nuevo material: {str(e)}")
+            return False # Inserción fallida
 
 #Para hacer un Update de datos dentro de la informacion de los materiales
     def update_material(self, id_material, new_data_mat):
@@ -84,7 +89,7 @@ class HandleDB():
             self._con.commit()
             return True  # Inserción exitosa
         except Exception as e:
-            print(f"Error al insertar cliente: {str(e)}")
+            print(f"Error al registrar un nuevo cliente: {str(e)}")
             return False  # Inserción fallida
 
 #Para hacer un Update de datos dentro de la informacion del cliente
@@ -117,8 +122,13 @@ class HandleDB():
     def insert_proveedor(self, data_prove):
         query = "INSERT INTO proveedores (NombreProveedor, CIpro, RUC, Direccion, Telefono) VALUES (%s, %s, %s, %s, %s)"
         values = (data_prove["NombreProveedor"], data_prove["CIpro"], data_prove["RUC"], data_prove["Direccion"], data_prove["Telefono"])
-        self._cur.execute(query, values)
-        self._con.commit()
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True # Inserción exitosa
+        except Exception as e:
+            print(f"Error al registrar un nuevo proveedor: {str(e)}")
+            return False # Inserción fallida
 
 #Para hacer un Update de datos dentro de la informacion del proveedor
     def update_proveedor(self, id_pro, new_data_provee):
@@ -150,8 +160,13 @@ class HandleDB():
     def insert_camion(self, data_camion):
         query = "INSERT INTO camiones (NroCamion, Marca, Modelo, Estado) VALUES (%s, %s, %s, %s)"
         values = (data_camion["NroCamion"], data_camion["Marca"], data_camion["Modelo"], data_camion["Estado"])
-        self._cur.execute(query, values)
-        self._con.commit()
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True # Inserción exitosa
+        except Exception as e:
+            print(f"Error al registrar un nuevo camion: {str(e)}")
+            return False # Inserción fallida
 
 #Para hacer un Update de datos dentro de la informacion de un camion
     def update_camion(self, id_cami, new_data_cami):

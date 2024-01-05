@@ -31,4 +31,9 @@
         <button class="btn btn-primary">Agregar</button>
     </div>
 </form>
+{% if material_registrado %}
+<script>
+    alert("Un nuevo material ha sido registrado exitosamente");
+</script>
+{% endif %}
 {% endblock %}

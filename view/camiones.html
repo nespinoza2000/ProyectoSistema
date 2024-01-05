@@ -35,4 +35,9 @@
         <button class="btn btn-primary">Agregar</button>
     </div>
 </form>
+{% if camion_registrado %}
+<script>
+    alert("Un nuevo camion ha sido registrado exitosamente");
+</script>
+{% endif %}
 {% endblock %}

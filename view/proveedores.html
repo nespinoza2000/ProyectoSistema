@@ -37,4 +37,9 @@
         <button class="btn btn-primary">Agregar</button>
     </div>
 </form>
+{% if proveedor_registrado %}
+<script>
+    alert("Un nuevo proveedor ha sido registrado exitosamente");
+</script>
+{% endif %}
 {% endblock %}

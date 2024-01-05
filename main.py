@@ -18,11 +18,6 @@ def root(req: Request):
 def root(req: Request):
     return template.TemplateResponse("index.html", {"request": req})
 
-@app.get("/employd.html")
-async def employd_page(req: Request):
-    # Lógica para mostrar la página Employd.html
-    return template.TemplateResponse("employd.html", {"request": req})
-
 @app.get("/signup", response_class=HTMLResponse)
 def signup(req: Request):
     return template.TemplateResponse("signup.html", {"request": req})
@@ -35,6 +30,15 @@ def user(req: Request, username: str = Form(), password: str = Form()):
             return template.TemplateResponse(
                 "employd.html", {"request": req, "data_user": verify}
             )
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+@app.get("/back-to-user")
+def back_to_user():
+    return RedirectResponse(url="/get-user", status_code=302)
+
+@app.get("/get-user", response_class=HTMLResponse)
+def get_user(req: Request):
+    return template.TemplateResponse("employd.html", {"request": req, "data_user": True})
 
 #No tocar esta linea de codigo
 @app.post("/data_processing")
@@ -82,8 +86,11 @@ def cargar_mat(
     handle_db = HandleDB()
     material_registrado = handle_db.insert_mat(data_mat)
     del handle_db
-    return template.TemplateResponse(
-        "employd.html", {"request": req, "data_user": True})#Comando para volver al menu del empleado
+    print(material_registrado)
+    response = template.TemplateResponse(
+        "material_registrado.html", {"request": req, "data_user": True, "material_registrado": material_registrado}) #Comando para volver al menu del empleado
+    response.set_cookie(key="session", value="some_session_token")
+    return response
 
 @app.get("/verMat")
 def verMat(req: Request):
@@ -213,9 +220,12 @@ async def cargar_pro(
     handle_db = HandleDB()
     proveedor_registrado = handle_db.insert_proveedor(data_provee) # Solo una vez
     del handle_db
-    return template.TemplateResponse(
-        "employd.html", {"request": req, "data_user": True}
+    print(proveedor_registrado)
+    response = template.TemplateResponse(
+        "proveedor_registrado.html", {"request": req, "data_user": True, "proveedor_registrado": proveedor_registrado}
     )
+    response.set_cookie(key="session", value="some_session_token")
+    return response
 
 @app.get("/verProveedor")
 def verProveedor(req: Request):
@@ -282,9 +292,12 @@ async def cargar_cami(
     handle_db = HandleDB()
     camion_registrado = handle_db.insert_camion(data_camion) #Solo una vez
     del handle_db
-    return template.TemplateResponse(
-        "employd.html", {"request": req, "data_user": True}
+    print(camion_registrado)
+    response = template.TemplateResponse(
+        "camion_registrado.html", {"request": req, "data_user": True, "camion_registrado": camion_registrado}
     )
+    response.set_cookie(key="session", value="some_session_token")
+    return response
 
 @app.get("/verCamion")
 def verCamion(req: Request):
