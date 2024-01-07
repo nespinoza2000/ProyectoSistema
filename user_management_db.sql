@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-01-2024 a las 02:25:39
+-- Tiempo de generación: 06-01-2024 a las 20:12:35
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 7.4.33
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `user_management_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `camiones`
+--
+
+CREATE TABLE `camiones` (
+  `IdCamion` int(11) NOT NULL,
+  `NroCamion` varchar(25) NOT NULL,
+  `Marca` varchar(25) NOT NULL,
+  `Modelo` varchar(25) NOT NULL,
+  `Estado` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `camiones`
+--
+
+INSERT INTO `camiones` (`IdCamion`, `NroCamion`, `Marca`, `Modelo`, `Estado`) VALUES
+(11, 'Camion 4', 'Mercedes Truck', '2002', 'Mantenimeinto'),
+(12, 'Camion 2', 'Renault', 'Kerax 430 DXI', 'Disponible'),
+(13, 'Camion 2', 'Renault', 'Kerax 430 DXI', 'Disponible');
 
 -- --------------------------------------------------------
 
@@ -64,7 +87,21 @@ CREATE TABLE `materiales` (
 --
 
 INSERT INTO `materiales` (`IdMat`, `NombreMaterial`, `DescripcionMat`, `Precio`, `Cantidad`) VALUES
-(1, 'Cables de Baja Tensión', 'El cable de baja tensión esta diseñado para transportar 1000 a 1500 V', 3000, 100);
+(1, 'Cables de Baja Tensión', 'El cable de baja tensión esta diseñado para transportar 1000 a 1500 V', 3000, 100),
+(13, 'Cables de Media Tension', 'Cable de 1mm y multifibral de cobre', 12000, 120);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `IdPedido` int(11) NOT NULL,
+  `NombrePro` varchar(50) NOT NULL,
+  `DescripPedido` varchar(1000) NOT NULL,
+  `FormaPago` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -86,7 +123,9 @@ CREATE TABLE `proveedores` (
 --
 
 INSERT INTO `proveedores` (`IdPro`, `NombreProveedor`, `CIpro`, `RUC`, `Direccion`, `Telefono`) VALUES
-(1, 'F Machado', '1234545', '1234589-9', 'Barrio Santa Clara', 986757776);
+(1, 'Facundo Machado', '1234545', '1234589-9', 'Barrio Santa Clara', 986757776),
+(3, 'Enzo Acuña', '23456789', '23456789-1', 'Barrio Santa Helena', 971945812),
+(4, 'Fabrizio Machado', '12345678', '12345678-1', 'Barrio Los Jardines', 971675234);
 
 -- --------------------------------------------------------
 
@@ -117,6 +156,12 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `password`) VALU
 --
 
 --
+-- Indices de la tabla `camiones`
+--
+ALTER TABLE `camiones`
+  ADD PRIMARY KEY (`IdCamion`);
+
+--
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
@@ -127,6 +172,12 @@ ALTER TABLE `clientes`
 --
 ALTER TABLE `materiales`
   ADD PRIMARY KEY (`IdMat`);
+
+--
+-- Indices de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`IdPedido`);
 
 --
 -- Indices de la tabla `proveedores`
@@ -146,22 +197,34 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `camiones`
+--
+ALTER TABLE `camiones`
+  MODIFY `IdCamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `materiales`
 --
 ALTER TABLE `materiales`
-  MODIFY `IdMat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `IdMat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `IdPedido` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `IdPro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdPro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

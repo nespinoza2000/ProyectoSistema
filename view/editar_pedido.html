@@ -1,0 +1,36 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<form action="/EditarPedido/{{ pedido[0] }}/update" method="post" style="justify-content: center;">
+    <div class="form-group">
+        <label for="DescripPedido" class="col-sm-4 row-form-label" style="text-align: center;">Descripción del
+            Pedido:</label>
+        <div class="col-sm-5">
+            <textarea class="form-control" id="DescripPedido" name="DescripPedido"
+                rows="3">{{ descripcion_pedido_actual }}</textarea>
+        </div>
+    </div>
+    <div class="form-check">
+        <h3>¿Cuál es su método de pago?</h3>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="formapago" id="formapago1" value="Efectivo">
+        <label class="form-check-label" for="formapago1">
+            Efectivo
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="formapago" id="formapago2" value="Transferencia bancaria">
+        <label class="form-check-label" for="formapago2">
+            Transferencia bancaria
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="formapago" id="formapago3" value="Cheque con fecha diferida">
+        <label class="form-check-label" for="formapago3">
+            Cheque con fecha diferida
+        </label>
+    </div>
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="btn btn-primary ml-auto">Guardar Cambios</button>
+</form>
+{% endblock %}

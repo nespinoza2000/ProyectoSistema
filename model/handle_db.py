@@ -181,5 +181,56 @@ class HandleDB():
         self._cur.execute(query, (id_cami,))
         self._con.commit()
 
+#Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html
+    def get_nombres_proveedores(self):
+        self._cur.execute("SELECT NombreProveedor FROM proveedores")
+        nombres_proveedores = self._cur.fetchall()
+        return nombres_proveedores
+
+#Para hacer un insert de datos dentro de la tabla pedidos
+    def insert_pedido(self, data_pedido):
+        forma_pago_map = {
+            "option1": "Efectivo",
+            "option2": "Transferencia bancaria",
+            "option3": "Cheque con fecha diferida"
+        }
+        forma_pago = forma_pago_map.get(data_pedido["FormaPago"], "Forma de pago no especificada")
+        query = "INSERT INTO pedidos (NombrePro, DescripPedido, FormaPago) VALUES (%s, %s, %s)"
+        values = (data_pedido["NombrePro"], data_pedido["DescripPedido"], forma_pago)
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True  # Inserción exitosa
+        except mysql.connector.Error as err:
+            print(f"Error al registrar un nuevo pedido: {err}")
+            return False  # Inserción fallida
+
+#Para traer todos los pedidos imprimidos
+    def get_pedidos(self):
+        self._cur.execute("SELECT * FROM pedidos")
+        data_pedido = self._cur.fetchall()
+        return data_pedido
+
+#Para traer los datos de un solo pedido
+    def get_pedido_by_id(self, id_pedido):
+        query = "SELECT * FROM pedidos WHERE IdPedido = %s"
+        self._cur.execute(query, (id_pedido,))
+        data_pedido = self._cur.fetchone()
+        return data_pedido
+
+#Para hacer un Update de datos dentro de la informacion de un pedido
+    def update_pedido(self, id_pedido, new_data_pedido):
+        query = "UPDATE pedidos SET DescripPedido = %s, FormaPago = %s WHERE IdPedido = %s"
+        values = (new_data_pedido["DescripPedido"], new_data_pedido["FormaPago"], id_pedido)
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de un solo pedido
+    def delete_pedido(self, id_pedido):
+        query = "DELETE FROM pedidos WHERE IdPedido = %s"
+        self._cur.execute(query, (id_pedido,))
+        self._con.commit()
+
+
     def __del__(self):
         self._con.close()

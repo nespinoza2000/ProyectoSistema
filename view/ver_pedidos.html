@@ -1,0 +1,51 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre del Proveedor</th>
+            <th scope="col">Descripcion del Pedido</th>
+            <th scope="col">Forma del Pago</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido[0] }}</td>
+            <td>{{ pedido[1] }}</td>
+            <td>{{ pedido[2] }}</td>
+            <td>{{ pedido[3] }}</td>
+            <td>
+                <a href="/EditarPedido/{{ pedido[0] }}" class="btn btn-success">Editar</a>
+                <a href="#" onclick="imprimirPedido('{{ pedido[0] }}')" class="btn btn-warning">Imprimir</a>
+                <a href="/BorrarPedido/{{ pedido[0] }}/delete" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/back-to-user" class="btn btn-primary">Volver</a>
+<script>
+    function imprimirPedido(idPedido) {
+        var ventanaImpresion = window.open('', '_blank');
+        ventanaImpresion.document.write('<html><head><title>Pedido</title></head><body>');
+        ventanaImpresion.document.write('<h1>Datos del Pedido</h1>');
+        ventanaImpresion.document.write('<table class="table">');
+        ventanaImpresion.document.write('<thead class="thead-dark"><tr><th scope="col">Id</th><th scope="col">Nombre del Proveedor</th><th scope="col">Descripción del Pedido</th><th scope="col">Forma del Pago</th></tr></thead>');
+        ventanaImpresion.document.write('<tbody>');
+        // Agregar el pedido seleccionado a la ventana de impresión
+        ventanaImpresion.document.write('<tr>');
+        ventanaImpresion.document.write('<td>' + idPedido + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('nombreProveedor' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('descripcionPedido' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('formaPago' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('</tr>');
+        ventanaImpresion.document.write('</tbody></table>');
+        ventanaImpresion.document.write('</body></html>');
+        ventanaImpresion.print();
+        ventanaImpresion.close();
+    }
+</script>
+{% endblock %}

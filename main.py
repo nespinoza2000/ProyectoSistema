@@ -339,3 +339,68 @@ def delete_camion(IdCamion: int):
     del handle_db
     return RedirectResponse(url="/verCamion", status_code=302)
 #Aqui acaba toda las funcionalidades para camion
+
+#Aqui empieza la funcionalidad relacionada con las Actividades
+#Las funcionalidades para hacer los pedidos
+@app.get("/PedidosPro")
+def pedidosProv(req: Request):
+    handle_db = HandleDB()
+    # Obtener nombres de proveedores desde la base de datos
+    nombres_proveedores = handle_db.get_nombres_proveedores()
+    return template.TemplateResponse("pedidos.html", {"request": req, "nombres_proveedores": nombres_proveedores})
+
+@app.post("/CargarPedido")
+def cargarpedido(
+    req: Request, 
+    nombrepro: str = Form(...), 
+    pedido_mat: str = Form(...), 
+    formapago: str = Form(...)
+):
+    data_pedido = {
+        "NombrePro": nombrepro,
+        "DescripPedido": pedido_mat,
+        "FormaPago": formapago
+    }
+    handle_db = HandleDB()
+    pedido_registrado = handle_db.insert_pedido(data_pedido)
+    if pedido_registrado:
+        return template.TemplateResponse(
+            "pedido_registrado.html", {"request": req, "data_user": True, "pedido_registrado": pedido_registrado}
+        )
+
+@app.get("/verPedidos")
+def verPedido(req: Request):
+    handle_db = HandleDB()
+    pedidos = handle_db.get_pedidos()
+    return template.TemplateResponse("ver_pedidos.html", {"request": req, "pedidos": pedidos})
+
+@app.get("/EditarPedido/{IdPedido}")
+def show_edit_pedido(req: Request, IdPedido: int):
+    handle_db = HandleDB()
+    pedido = handle_db.get_pedido_by_id(IdPedido) # Cambiar a get_pedido_by_id para obtener un pedido específico
+    del handle_db
+    return template.TemplateResponse("editar_pedido.html", {"request": req, "pedido": pedido})
+
+@app.post("/EditarPedido/{IdPedido}/update")
+def update_pedido(
+    req: Request,
+    IdPedido: int,
+    DescripPedido: str = Form(...),
+    formapago: str = Form(...)
+):
+    new_data_pedido = {
+        "DescripPedido": DescripPedido,
+        "FormaPago": formapago
+    }
+    handle_db = HandleDB()
+    handle_db.update_pedido(IdPedido, new_data_pedido)
+    del handle_db
+    return RedirectResponse(url="/verPedidos", status_code=302)
+
+@app.get("/BorrarPedido/{IdPedido}/delete")
+def delete_pedido(IdPedido: int):
+    handle_db = HandleDB()
+    handle_db.delete_pedido(IdPedido)
+    del handle_db
+    return RedirectResponse(url="/verPedidos", status_code=302)
+
