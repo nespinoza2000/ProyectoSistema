@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-01-2024 a las 20:12:35
+-- Tiempo de generación: 11-01-2024 a las 00:14:15
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 7.4.33
 
@@ -71,6 +71,26 @@ INSERT INTO `clientes` (`IdCliente`, `NombreCliente`, `RUC`, `Direccion`, `Telef
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `compras`
+--
+
+CREATE TABLE `compras` (
+  `IdCompra` int(11) NOT NULL,
+  `Proveedor` varchar(50) NOT NULL,
+  `DetalleCompra` varchar(100) NOT NULL,
+  `DescripCompra` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `compras`
+--
+
+INSERT INTO `compras` (`IdCompra`, `Proveedor`, `DetalleCompra`, `DescripCompra`) VALUES
+(1, 'Enzo Acuña', 'Bobinas de cable de media tensión - 35000', 'Los necesito en 2 días');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `materiales`
 --
 
@@ -87,8 +107,10 @@ CREATE TABLE `materiales` (
 --
 
 INSERT INTO `materiales` (`IdMat`, `NombreMaterial`, `DescripcionMat`, `Precio`, `Cantidad`) VALUES
-(1, 'Cables de Baja Tensión', 'El cable de baja tensión esta diseñado para transportar 1000 a 1500 V', 3000, 100),
-(13, 'Cables de Media Tension', 'Cable de 1mm y multifibral de cobre', 12000, 120);
+(1, 'Bobinas de cable de baja tension', 'Las bobinas son de tamaño mediano', 25000, 100),
+(13, 'Bobinas de cable de media tensión', 'Las bobinas son de tamaño grande', 35000, 120),
+(15, 'Bobinas de cable de baja tensión', 'Las bobinas son de tamaño pequeño', 7000, 24),
+(16, 'Bobinas de cable de baja tensión', 'Las bobinas son de tamaño grande', 39000, 6);
 
 -- --------------------------------------------------------
 
@@ -102,6 +124,13 @@ CREATE TABLE `pedidos` (
   `DescripPedido` varchar(1000) NOT NULL,
   `FormaPago` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`IdPedido`, `NombrePro`, `DescripPedido`, `FormaPago`) VALUES
+(4, 'Facundo Machado', 'Quiero 5 bobinas de cable de media tensión, tamaño mediano', 'Cheque con fecha diferida');
 
 -- --------------------------------------------------------
 
@@ -168,6 +197,12 @@ ALTER TABLE `clientes`
   ADD PRIMARY KEY (`IdCliente`);
 
 --
+-- Indices de la tabla `compras`
+--
+ALTER TABLE `compras`
+  ADD PRIMARY KEY (`IdCompra`);
+
+--
 -- Indices de la tabla `materiales`
 --
 ALTER TABLE `materiales`
@@ -209,16 +244,22 @@ ALTER TABLE `clientes`
   MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
+-- AUTO_INCREMENT de la tabla `compras`
+--
+ALTER TABLE `compras`
+  MODIFY `IdCompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `materiales`
 --
 ALTER TABLE `materiales`
-  MODIFY `IdMat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `IdMat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `IdPedido` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
