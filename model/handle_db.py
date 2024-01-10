@@ -181,7 +181,7 @@ class HandleDB():
         self._cur.execute(query, (id_cami,))
         self._con.commit()
 
-#Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html
+#Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html y compras.html
     def get_nombres_proveedores(self):
         self._cur.execute("SELECT NombreProveedor FROM proveedores")
         nombres_proveedores = self._cur.fetchall()
@@ -231,6 +231,42 @@ class HandleDB():
         self._cur.execute(query, (id_pedido,))
         self._con.commit()
 
+#Para obtener el nombre de los materiales para la plantilla compras.html
+    def get_nombres_materiales_con_precio(self):
+        self._cur.execute("SELECT NombreMaterial, Precio FROM materiales")
+        nombres_materiales_con_precio = self._cur.fetchall()
+        return nombres_materiales_con_precio
+
+# Obtener el precio de un material específico
+    def get_precio_material(self, nombre_material):
+        query = "SELECT Precio FROM materiales WHERE NombreMaterial = %s"
+        self._cur.execute(query, (nombre_material,))
+        precio_material = self._cur.fetchone()
+        return precio_material[3] if precio_material else None
+
+#Para hacer un insert de datos dentro de la tabla compras
+    def insert_compra(self, data_compra):
+        query = "INSERT INTO compras (Proveedor, DetalleCompra, DescripCompra) VALUES (%s, %s, %s)"
+        values = (data_compra["Proveedor"], data_compra["DetalleCompra"], data_compra["DescripCompra"])
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True  # Inserción exitosa
+        except mysql.connector.Error as err:
+            print(f"Error al imprimir ticket de compra {err}")
+            return False  # Inserción fallida
+
+#Para traer todos los tickets de compra imprimidos
+    def get_compras(self):
+        self._cur.execute("SELECT * FROM compras")
+        data_compra = self._cur.fetchall()
+        return data_compra
+
+#Para hacer un delete de datos dentro de la informacion de una sola compra
+    def delete_compra(self, id_compra):
+        query = "DELETE FROM compras WHERE IdCompra = %s"
+        self._cur.execute(query, (id_compra,))
+        self._con.commit()
 
     def __del__(self):
         self._con.close()

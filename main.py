@@ -403,4 +403,44 @@ def delete_pedido(IdPedido: int):
     handle_db.delete_pedido(IdPedido)
     del handle_db
     return RedirectResponse(url="/verPedidos", status_code=302)
+#Aqui terminan las funcionalidades para hacer los pedidos
 
+#Las funcionalidades para hacer las compras a proveedores inician aqui
+@app.get("/ComprasPro")
+def ComprasProv(req: Request):
+    handle_db = HandleDB()
+    # Obtener nombres de proveedores desde la base de datos
+    nombres_proveedores = handle_db.get_nombres_proveedores()
+    # Obtener nombres y precios de materiales
+    nombres_materiales_con_precio = handle_db.get_nombres_materiales_con_precio()
+    return template.TemplateResponse("compras.html", {"request": req, "nombres_proveedores": nombres_proveedores, "nombres_materiales_con_precio": nombres_materiales_con_precio})
+
+@app.post("/ImprimirCompra")
+def ImprimirCompra(
+    req: Request,
+    nombrepro: str = Form(...),
+    nombremat: str = Form(...),
+    descripcion: str = Form(...)
+):
+    data_compra = {
+        "Proveedor": nombrepro,
+        "DetalleCompra": nombremat,
+        "DescripCompra": descripcion
+    }
+    handle_db = HandleDB()
+    compra_imprimida = handle_db.insert_compra(data_compra)
+    if compra_imprimida:
+        return template.TemplateResponse("ticket_compra.html", {"request": req, "data_user": True, "compra_imprimida": compra_imprimida})
+
+@app.get("/verCompras")
+def verCompras(req: Request):
+    handle_db = HandleDB()
+    compras = handle_db.get_compras()
+    return template.TemplateResponse("ver_ticket.html", {"request": req, "compras": compras})
+
+@app.get("/BorrarCompra/{IdCompra}/delete")
+def delete_compra(IdCompra: int):
+    handle_db = HandleDB()
+    handle_db.delete_compra(IdCompra)
+    del handle_db
+    return RedirectResponse(url="/verCompras", status_code=302)

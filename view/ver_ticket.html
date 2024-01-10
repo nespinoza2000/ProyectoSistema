@@ -1,0 +1,29 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre del Proveedor</th>
+            <th scope="col">Detalle de la Compra</th>
+            <th scope="col">Descripcion de la Compra</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for compra in compras %}
+        <tr>
+            <td>{{ compra[0] }}</td>
+            <td>{{ compra[1] }}</td>
+            <td>{{ compra[2] }}</td>
+            <td>{{ compra[3] }}</td>
+            <td>
+                <a href="#" class="btn btn-warning">Imprimir</a>
+                <a href="/BorrarCompra/{{ compra[0] }}/delete" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/back-to-user" class="btn btn-primary">Volver</a>
+{% endblock %}
