@@ -181,7 +181,7 @@ class HandleDB():
         self._cur.execute(query, (id_cami,))
         self._con.commit()
 
-#Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html y compras.html
+#Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html, compras.html y pagos.html
     def get_nombres_proveedores(self):
         self._cur.execute("SELECT NombreProveedor FROM proveedores")
         nombres_proveedores = self._cur.fetchall()
@@ -267,6 +267,37 @@ class HandleDB():
         query = "DELETE FROM compras WHERE IdCompra = %s"
         self._cur.execute(query, (id_compra,))
         self._con.commit()
+
+# Para traer todos los pagos realizados
+    def get_pagos(self):
+        self._cur.execute("SELECT * FROM pagos")
+        data_pago = self._cur.fetchall()
+        return data_pago
+
+# Para obtener los datos de un solo pago
+    def get_pago_by_id(self, id_pago):
+        query = "SELECT * FROM pagos WHERE IdPago = %s"
+        self._cur.execute(query, (id_pago,))
+        data_pago = self._cur.fetchone()
+        return data_pago
+
+# Para hacer un insert de datos dentro de la tabla pagos
+    def insert_pago(self, data_pago):
+        forma_pago_map = {
+            "option1": "Efectivo",
+            "option2": "Transferencia bancaria",
+            "option3": "Cheque con fecha diferida"
+        }
+        forma_pago = forma_pago_map.get(data_pago["FormaPago"], "Forma de pago no especificada")
+        query = "INSERT INTO pagos (Proveedor, Monto, FormaPago) VALUES (%s, %s, %s)"
+        values = (data_pago["Proveedor"], data_pago["Monto"], forma_pago)
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True  # Inserción exitosa
+        except mysql.connector.Error as err:
+            print(f"Error al registrar un nuevo pago: {err}")
+            return False  # Inserción fallida
 
     def __del__(self):
         self._con.close()

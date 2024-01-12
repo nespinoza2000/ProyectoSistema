@@ -1,0 +1,36 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<h1 style="text-align: center;">Pagar a un proveedor</h1>
+<form action="/procesar_pago" method="post" style="justify-content: center;">
+    <div class="form-group">
+        <label for="nombrepro" class="col-sm-2 col-form-label" style="text-align: center;">Seleccione a un
+            proveedor</label>
+        <div class="col-sm-5">
+            <select style="justify-content: center;" class="form-control" id="nombrepro" name="nombrepro">
+                <option>Selecciona un proveedor</option>
+                {% for proveedor in nombres_proveedores %}
+                <option>{{ proveedor[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="monto" class="col-sm-2 col-form-label" style="text-align: center;">Monto</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="forma_pago" class="col-sm-2 col-form-label" style="text-align: center;">Forma de Pago</label>
+        <div class="col-sm-5">
+            <select style="justify-content: center;" class="form-control" id="forma_pago" name="forma_pago">
+                <option value="option1">Efectivo</option>
+                <option value="option2">Transferencia bancaria</option>
+                <option value="option3">Cheque con fecha diferida</option>
+            </select>
+        </div>
+    </div>
+    <a href="/back-to-user" class="btn btn-primary">Volver</a>
+    <button type="submit" class="btn btn-success">Pagar</button>
+</form>
+{% endblock %}

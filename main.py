@@ -444,3 +444,45 @@ def delete_compra(IdCompra: int):
     handle_db.delete_compra(IdCompra)
     del handle_db
     return RedirectResponse(url="/verCompras", status_code=302)
+#Aqui terminan las funcionalidades para hacer las compras
+
+#Las funcionalidades para hacer los pagos a proveedores inician aqui
+@app.get("/PagosPro")
+def PagosProv(req: Request):
+    handle_db = HandleDB()
+    # Obtener nombres de proveedores desde la base de datos
+    nombres_proveedores = handle_db.get_nombres_proveedores()
+    return template.TemplateResponse("pagos.html", {"request": req, "nombres_proveedores": nombres_proveedores})
+
+@app.post("/procesar_pago")
+async def procesar_pago(
+    req: Request,
+    nombrepro: str = Form(...),
+    monto: float = Form(...),
+    forma_pago: str = Form(...),  # Este campo es para la forma de pago
+):
+    # Lógica para procesar el pago en la base de datos
+    data_pago = {
+        "Proveedor": nombrepro,
+        "Monto": monto,
+        "FormaPago": forma_pago,
+    }
+    handle_db = HandleDB()
+    proceso_pago = handle_db.insert_pago(data_pago)
+    if proceso_pago:
+        return template.TemplateResponse("pago_hecho.html", {"request": req, "data_user": True, "proceso_pago": proceso_pago})
+
+@app.get("/verOrden")
+def verOrden(req: Request):
+    handle_db = HandleDB()
+    orden = handle_db.get_pagos()
+    return template.TemplateResponse("pagos_realizados.html", {"request": req, "orden": orden})
+#Aqui acaba todas las funcionalidades para los pagos
+#Aqui termina la funcionalidad relacionada con las Actividades
+
+
+
+
+
+
+

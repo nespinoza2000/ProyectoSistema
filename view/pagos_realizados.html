@@ -1,0 +1,28 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Orden de pago numero</th>
+            <th scope="col">Proveedor a Pagar</th>
+            <th scope="col">Monto a saldar</th>
+            <th scope="col">Forma de Pago</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pago in orden %}
+        <tr>
+            <td>{{ pago[0] }}</td>
+            <td>{{ pago[1] }}</td>
+            <td>{{ pago[2] }}</td>
+            <td>{{ pago[3] }}</td>
+            <td>
+                <a href="#" class="btn btn-success">Imprimir Factura</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/back-to-user" class="btn btn-primary">Volver</a>
+{% endblock %}
