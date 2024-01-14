@@ -480,6 +480,65 @@ def verOrden(req: Request):
 #Aqui acaba todas las funcionalidades para los pagos
 #Aqui termina la funcionalidad relacionada con las Actividades
 
+#Aqui empieza toda funcionalidad con las tareas
+@app.get("/AdminTareas")
+def RealizarTareas(req: Request):
+    return template.TemplateResponse("tareas.html", {"request": req})
+
+@app.post("/CargarTarea")
+async def cargar_tarea(
+    req: Request,
+    tarea: str = Form(...),
+    detalle: str = Form(...)
+):
+    data_tarea = {
+        "Tarea": tarea,
+        "Detalles": detalle
+    }
+    handle_db = HandleDB()
+    tarea_registrada = handle_db.insert_tarea(data_tarea) #Solo una vez
+    del handle_db
+    response = template.TemplateResponse("tarea_registrada.html", {"request": req, "data_user": True, "tarea_registrada": tarea_registrada})
+    response.set_cookie(key="session", value="some_session_token")
+    return response
+
+@app.get("/verTarea")
+def verTarea(req: Request):
+    handle_db = HandleDB()
+    tareas = handle_db.get_tareas()
+    return template.TemplateResponse("ver_tareas.html", {"request": req, "tareas": tareas})
+
+@app.get("/EditarTarea/{IdTarea}")
+def mostrar_edit_tarea(req: Request, IdTarea: int):
+    handle_db = HandleDB()
+    tarea = handle_db.get_tarea_by_id(IdTarea) # Cambiar a get_tarea_by_id para obtener una tarea específico
+    del handle_db
+    return template.TemplateResponse("editar_tarea.html", {"request": req, "tarea": tarea})
+
+@app.post("/EditarTarea{IdTarea}/update")
+def update_tarea(
+    req: Request,
+    IdTarea: int,
+    Tarea: str = Form(...),
+    Detalles: str = Form(...)
+):
+    new_data_tarea = {
+        "Tarea": Tarea,
+        "Detalles": Detalles
+    }
+    handle_db = HandleDB()
+    handle_db.update_tarea(IdTarea, new_data_tarea)
+    del handle_db
+    return RedirectResponse(url="/verTarea", status_code=302)
+
+@app.get("/BorrarTarea/{IdTarea}/delete")
+def delete_tarea(IdTarea: int):
+    handle_db = HandleDB()
+    handle_db.delete_tarea(IdTarea)
+    del handle_db
+    return RedirectResponse(url="/verTarea", status_code=302)
+#Aqui acaban todas las funcionalidades para administrar tareas
+
 
 
 

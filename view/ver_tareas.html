@@ -1,0 +1,25 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Tarea</th>
+            <th scope="col">Descripcion de la misma</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea[1] }}</td>
+            <td>{{ tarea[2] }}</td>
+            <td>
+                <a href="/EditarTarea/{{ tarea[0] }}" class="btn btn-success">Editar</a>
+                <a href="/BorrarTarea/{{ tarea[0] }}/delete" class="btn btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/back-to-user" class="btn btn-primary">Volver</a>
+{% endblock %}

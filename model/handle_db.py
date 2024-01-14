@@ -299,5 +299,46 @@ class HandleDB():
             print(f"Error al registrar un nuevo pago: {err}")
             return False  # Inserción fallida
 
+#Para traer todas las tareas de la base de datos
+    def get_tareas(self):
+        self._cur.execute("SELECT * FROM tareas")
+        data_tarea = self._cur.fetchall()
+        return data_tarea
+
+# Para obtener los datos de una sola tarea
+    def get_tarea_by_id(self, id_tarea):
+        query = "SELECT * FROM tareas WHERE IdTarea = %s"
+        self._cur.execute(query, (id_tarea,))
+        data_tarea = self._cur.fetchone()
+        return data_tarea
+
+#Para hacer un insert de datos dentro de la tabla tareas
+    def insert_tarea(self, data_tarea):
+        query = "INSERT INTO tareas (Tarea, Detalles) VALUES (%s, %s)"
+        values = (data_tarea["Tarea"], data_tarea["Detalles"])
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True # Inserción exitosa
+        except mysql.connector.Error as err:
+            print(f"Error al agregar una tarea {err}")
+            return False # Inserción fallida
+
+#Para hacer un Update de datos dentro de la informacion de una tarea
+    def update_tarea(self, id_tarea, new_data_tarea):
+        query = "UPDATE tareas SET Tarea = %s, Detalles = %s WHERE IdTarea = %s"
+        values = (new_data_tarea["Tarea"], new_data_tarea["Detalles"], id_tarea)
+        self._cur.execute(query, values)
+        self._con.commit()
+
+#Para hacer un Delete de datos dentro de la informacion de una sola tarea
+    def delete_tarea(self, id_tarea):
+        query = "DELETE FROM tareas WHERE IdTarea = %s"
+        self._cur.execute(query, (id_tarea,))
+        self._con.commit()
+
+
+
+
     def __del__(self):
         self._con.close()

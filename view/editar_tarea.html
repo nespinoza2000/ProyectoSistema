@@ -1,0 +1,20 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<form action="/EditarTarea{{ tarea[0] }}/update" method="post" style="justify-content: center;">
+    <h2 style="text-align: center;">Actualizar la tarea</h2>
+    <div class="form-group">
+        <label for="Tarea" class="col-sm-3 col-form-label" style="text-align: center;">Ingrese una nueva tarea</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="Tarea" id="Tarea" value="{{ tarea[1] }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Detalles" class="col-sm-3 col-form-label" style="text-align: center;">Describa brevemente sobre la
+            tarea</label>
+        <div class="col-sm-5">
+            <textarea class="form-control" name="Detalles" id="Detalles" rows="3" value="{{ tarea[2] }}"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success" style="justify-content: center;">Guardar cambios</button>
+</form>
+{% endblock %}

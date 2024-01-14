@@ -1,0 +1,28 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<h1 style="text-align: center;">Agregar nuevas tareas</h1>
+<form action="/CargarTarea" method="post" style="justify-content: center;">
+    <div class="form-group">
+        <label for="tarea" class="col-sm-3 col-form-label" style="text-align: center;">Ingrese una nueva tarea</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="tarea" id="tarea">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="detalle" class="col-sm-3 col-form-label" style="text-align: center;">Describa brevemente sobre la
+            tarea</label>
+        <div class="col-sm-5">
+            <textarea class="form-control" name="detalle" id="detalle" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="col-sm-5 text-center">
+        <a href="/back-to-user" class="btn btn-primary">Volver</a>
+        <button class="btn btn-success">Agregar nueva tarea</button>
+    </div>
+</form>
+{% if tarea_registrada %}
+<script>
+    alert("Una nueva tarea ha sido agregada a la base de datos");
+</script>
+{% endif %}
+{% endblock %}
