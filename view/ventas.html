@@ -1,0 +1,41 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<h1 style="text-align: center;">Realizar una Venta</h1>
+<form action="/ProcesarVenta" method="post" style="justify-content: center;">
+    <div class="form-group">
+        <label for="NombreCliente" class="col-sm-4 col-form-label" style="text-align: center;">El cliente que va a
+            comprar es:</label>
+        <div class="col-sm-5">
+            <select style="justify-content: center;" class="form-control" id="NombreCliente" name="NombreCliente">
+                <option>Seleccione al cliente</option>
+                {% for cliente in nombres_clientes %}
+                <option>{{ cliente[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nombremat" class="col-sm-4 col-form-label" style="text-align: center;">El material que quiere
+            es:</label>
+        <div class="col-sm-5">
+            <select style="justify-content: center;" class="form-control" id="nombremat" name="nombremat">
+                <option>Selecciona un material</option>
+                {% for material in nom_mat_pre_cant %}
+                <option>{{ material[0] }} - Precio: {{ material[1] }} - Cantidad: {{ material[2] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="especifi" class="col-sm-5 row-form-label" style="text-align: center;">Por favor. Especifique
+            el tamaño y cantidad</label>
+        <div class="col-sm-5">
+            <textarea class="form-control" id="especifi" name="especifi" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <a href="/back-to-user" class="btn btn-primary">Volver</a>
+        <button type="submit" class="btn btn-warning">Realizar Venta</button>
+    </div>
+</form>
+{% endblock %}

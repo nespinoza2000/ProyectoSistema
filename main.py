@@ -22,6 +22,10 @@ def root(req: Request):
 def signup(req: Request):
     return template.TemplateResponse("signup.html", {"request": req})
 
+@app.get("/favicon.ico") #Para ignorar el mensaje de error cuando se carga un icono por defecto
+async def get_favicon():
+    raise HTTPException(status_code=404, detail="Favicon not found")
+
 #No tocar este fragmento de codigo
 @app.post("/user", response_class=HTMLResponse)
 def user(req: Request, username: str = Form(), password: str = Form()):
@@ -539,6 +543,56 @@ def delete_tarea(IdTarea: int):
     return RedirectResponse(url="/verTarea", status_code=302)
 #Aqui acaban todas las funcionalidades para administrar tareas
 
+#Aqui inicia la funcionalidad de hacer un venta para los clientes
+@app.get("/VentaCli")
+def VentaCli(req: Request):
+    handle_db = HandleDB()
+    # Obtener nombres de los clientes desde la base de datos
+    nombres_clientes = handle_db.get_name_cliente()
+    # Obtener nombres, precios y cantidades de materiales
+    nom_mat_pre_cant = handle_db.get_name_mat_pre_cant()
+    return template.TemplateResponse("ventas.html", {"request": req, "nombres_clientes": nombres_clientes, "nom_mat_pre_cant": nom_mat_pre_cant})
+
+@app.post("/ProcesarVenta")
+def processing_sell(
+    req: Request,
+    NombreCliente: str = Form(...),
+    nombremat: str = Form(...),
+    especifi: str = Form(...)
+):
+    data_venta = {
+        "Cliente": NombreCliente,
+        "Material": nombremat,
+        "Detalle": especifi
+    }
+    handle_db = HandleDB()
+    try:
+        proceso_venta = handle_db.insert_ventas(data_venta)
+        if proceso_venta:
+            return template.TemplateResponse("venta_exitosa.html", {"request": req, "data_user": True, "proceso_venta": proceso_venta})
+    except Exception as e:
+        print(f"Error en el procesamiento de la venta: {e}")
+    return template.TemplateResponse("venta_fallida.html", {"request": req, "data_user": True})
+
+@app.get("/verVenta")
+def verVenta(req: Request):
+    handle_db = HandleDB()
+    ventas = handle_db.get_ventas()
+    return template.TemplateResponse("ver_ventas.html", {"request": req, "ventas": ventas})
+
+@app.get("/BorrarVenta/{IdVenta}/delete")
+def delete_venta(IdVenta: int):
+    handle_db = HandleDB()
+    handle_db.delete_venta(IdVenta)
+    del handle_db
+    return RedirectResponse(url="/verVenta", status_code=302)
+#Aqui terminan las funcionalidad para hacer las ventas
+
+#Aqui empiezan la funcionalidad relacionada sobre el manejo financiero
+#Las funcionalidades de ingresos empiezan aqui
+@app.get("/Menu")
+def menu_ineg(req: Request): #Nota al margen ineg es de Ingreso y Egreso
+    return template.TemplateResponse("menu.html", {"request": req})
 
 
 

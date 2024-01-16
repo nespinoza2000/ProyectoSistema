@@ -1,5 +1,6 @@
 import mysql.connector
 
+#Aqui solo hago la conexion con la Base de Datos para las futuras consultas
 class HandleDB():
     def __init__(self):
         # Reemplaza los valores con los de tu propia base de datos MySQL
@@ -11,23 +12,30 @@ class HandleDB():
         )
         
         self._cur = self._con.cursor()
+#Aqui finalizo con la inicializacion de la Base de Datos
 
+#Aqui empiezan las consultas para tabla "users" de la Base de Datos
+#Para obtener todos los usuarios
     def get_all(self):
         self._cur.execute("SELECT * FROM users")
         data = self._cur.fetchall()
         return data
 
+#Para buscar un solo usuario
     def get_only(self, data_user):
         self._cur.execute("SELECT * FROM users WHERE username = %s", (data_user,))
         data = self._cur.fetchone()
         return data
 
+#Para registrar un nuevo usuario en la tabla "users"
     def insert(self, data_user):
         query = "INSERT INTO users (id, firstname, lastname, username, password) VALUES (%s, %s, %s, %s, %s)"
         values = (data_user["id"], data_user["firstname"], data_user["lastname"], data_user["username"], data_user["password"])
         self._cur.execute(query, values)
         self._con.commit()
+#Hasta aqui llegan las consultas para la tabla "users". Esto es netamente funcionalidad para el logueo
 
+#Aqui empiezan las consultas para la tabla "materiales" en la base de datos
 #Para traer los materiales de la tabla materiales de la base de datos
     def get_all_mat(self):
         self._cur.execute("SELECT * FROM materiales")
@@ -65,7 +73,9 @@ class HandleDB():
         query = "DELETE FROM materiales WHERE IdMat = %s"
         self._cur.execute(query, (id_material,))
         self._con.commit()
+#Hasta aqui terminan las consultas para la tabla "materiales"
 
+#Aqui inician las consultas a la tabla "clientes" en la base de datos
 #Para traer los datos del cliente
     def get_cliente(self):
         self._cur.execute("SELECT * FROM clientes")
@@ -78,7 +88,6 @@ class HandleDB():
         self._cur.execute(query, (id_cliente,))
         data_cliente = self._cur.fetchone()
         return data_cliente
-
 
 #Para hacer un insert de datos dentro de la tabla clientes
     def insert_cliente(self, data_cliente):
@@ -104,7 +113,9 @@ class HandleDB():
         query = "DELETE FROM clientes WHERE IdCliente = %s"
         self._cur.execute(query, (id_cliente,))
         self._con.commit()
+#Hasta aqui terminan las consultas para la tabla "clientes"
 
+#Aqui empiezan las consultas de la tabla "proveedores" de la base de datos
 #Para traer los datos del proveedor
     def get_pro(self):
         self._cur.execute("SELECT * FROM proveedores")
@@ -142,7 +153,9 @@ class HandleDB():
         query = "DELETE FROM proveedores WHERE IdPro = %s"
         self._cur.execute(query, (id_pro,))
         self._con.commit()
+#Hasta aqui llegan las consultas a la tabla "camiones".
 
+#Aqui empiezan las consultas a la tabla "camiones" en la base de datos.
 #Para traer los datos del camion
     def get_cami(self):
         self._cur.execute("SELECT * FROM camiones")
@@ -180,7 +193,9 @@ class HandleDB():
         query = "DELETE FROM camiones WHERE IdCamion = %s"
         self._cur.execute(query, (id_cami,))
         self._con.commit()
+#Hasta aqui terminan las consultas para la tabla de "camiones".
 
+#Aqui inician las consultas para la tabla "pedidos" de la base de datos
 #Solo obtener el nombre de los proveedores para un <select> en la plantilla pedidos.html, compras.html y pagos.html
     def get_nombres_proveedores(self):
         self._cur.execute("SELECT NombreProveedor FROM proveedores")
@@ -230,7 +245,9 @@ class HandleDB():
         query = "DELETE FROM pedidos WHERE IdPedido = %s"
         self._cur.execute(query, (id_pedido,))
         self._con.commit()
+#Hasta aqui llegan las consultas para la tabla de "pedidos"
 
+#Desde aqui empiezan las consultas de la tabla "compras" de la base de datos
 #Para obtener el nombre de los materiales para la plantilla compras.html
     def get_nombres_materiales_con_precio(self):
         self._cur.execute("SELECT NombreMaterial, Precio FROM materiales")
@@ -298,7 +315,9 @@ class HandleDB():
         except mysql.connector.Error as err:
             print(f"Error al registrar un nuevo pago: {err}")
             return False  # Inserción fallida
+#Hasta aqui llegan las consultas para la tabla "compras"
 
+#Estas son las consultas para la tabla "tareas" de la base de datos
 #Para traer todas las tareas de la base de datos
     def get_tareas(self):
         self._cur.execute("SELECT * FROM tareas")
@@ -336,9 +355,51 @@ class HandleDB():
         query = "DELETE FROM tareas WHERE IdTarea = %s"
         self._cur.execute(query, (id_tarea,))
         self._con.commit()
+#Hasta aqui llegan la consultas para la funcionalidad de tareas
 
+#Aqui empiezan las consultas para la Base de Datos de la tabla "ventas".
+#Para traer solo los nombres de los clientes
+    def get_name_cliente(self):
+        self._cur.execute("SELECT NombreCliente FROM clientes")
+        nombres_clientes = self._cur.fetchall()
+        return nombres_clientes
 
+#Para traer solo los nombres de los materiales con su cantidad y precios
+    def get_name_mat_pre_cant(self):
+        self._cur.execute("SELECT NombreMaterial, Precio, Cantidad FROM materiales")
+        nom_mat_pre_cant = self._cur.fetchall()
+        return nom_mat_pre_cant
 
+#Para visualizar los dados de la tabla ventas
+    def get_ventas(self):
+        self._cur.execute("SELECT * FROM ventas")
+        data_venta = self._cur.fetchall()
+        return data_venta
+
+#Para visualizar un solo dato de la tabla ventas
+    def get_venta_by_id(self, id_venta):
+        query = "SELECT * FROM ventas WHERE IdVenta = %s"
+        self._cur.execute(query, (id_venta,))
+        data_venta = self._cur.fetchone()
+        return data_venta
+
+#Para hacer un insert de datos dentro de la tabla "ventas"
+    def insert_ventas(self, data_venta):
+        query = "INSERT INTO ventas (Cliente, Material, Detalle) VALUES (%s, %s, %s)"
+        values = (data_venta["Cliente"], data_venta["Material"], data_venta["Detalle"])
+        try:
+            self._cur.execute(query, values)
+            self._con.commit()
+            return True # Inserción exitosa
+        except mysql.connector.Error as err:
+            print(f"Error al realizar una venta {err}")
+            return False # Inserción fallida
+
+#Para hacer un delete de datos dentro de la tabla "ventas"
+    def delete_venta(self, id_ventas):
+        query = "DELETE FROM ventas WHERE IdVenta = %s"
+        self._cur.execute(query, (id_ventas,))
+        self._con.commit()
 
     def __del__(self):
         self._con.close()
