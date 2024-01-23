@@ -20,18 +20,49 @@
         <div class="col-sm-5">
             <select style="justify-content: center;" class="form-control" id="nombremat" name="nombremat">
                 <option>Selecciona un material</option>
-                {% for material in nom_mat_pre_cant %}
-                <option>{{ material[0] }} - Precio: {{ material[1] }} - Cantidad: {{ material[2] }}</option>
+                {% for material in nom_mat_desc %}
+                <option value="{{ material[0] }}">{{ material[0] }} - {{ material[1] }}</option>
                 {% endfor %}
             </select>
         </div>
     </div>
-    <div class="form-group">
-        <label for="especifi" class="col-sm-5 row-form-label" style="text-align: center;">Por favor. Especifique
-            el tamaño y cantidad</label>
-        <div class="col-sm-5">
-            <textarea class="form-control" id="especifi" name="especifi" rows="3"></textarea>
+    <div class="form-group row">
+        <label for="precio" class="col-sm-2 col-form-label" style="text-align: center;">Precio:</label>
+        <div class="col-sm-2">
+            <select style="justify-content: center;" class="form-control" id="precio" name="precio">
+                <option>Selecciona el precio</option>
+                {% for precio in nom_mat_pre %}
+                <option value="{{ precio[0] }}">{{ precio[0] }}</option>
+                {% endfor %}
+            </select>
         </div>
+    </div>
+    <div class="form-group row">
+        <label for="cantidad" class="col-sm-2 col-form-label" style="text-align: center;">Que cantidad desea:</label>
+        <div class="col-sm-2">
+            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1">
+        </div>
+    </div>
+    <div class="form-check">
+        <h3>Metodo de Pago por el cliente</h3>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="forma_pago_v" id="formapago1" value="option1">
+        <label class="form-check-label" for="formapago1">
+            Efectivo
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="forma_pago_v" id="formapago2" value="option2">
+        <label class="form-check-label" for="formapago2">
+            Transferencia bancaria
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="forma_pago_v" id="formapago3" value="option3">
+        <label class="form-check-label" for="formapago3">
+            Cheque con fecha diferida
+        </label>
     </div>
     <div class="col-sm-5">
         <a href="/back-to-user" class="btn btn-primary">Volver</a>

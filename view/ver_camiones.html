@@ -3,10 +3,11 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Camion numero</th>
             <th scope="col">Marca</th>
             <th scope="col">Modelo</th>
+            <th scope="col">Nro de Chasis</th>
+            <th scope="col">Nro de Chapa</th>
             <th scope="col">Estado</th>
             <th scope="col">Operaciones</th>
         </tr>
@@ -14,11 +15,12 @@
     <tbody>
         {% for camion in camiones %}
         <tr>
-            <td>{{ camion[0] }}</td>
             <td>{{ camion[1] }}</td>
             <td>{{ camion[2] }}</td>
             <td>{{ camion[3] }}</td>
             <td>{{ camion[4] }}</td>
+            <td>{{ camion[5] }}</td>
+            <td>{{ camion[6] }}</td>
             <td>
                 <a href="/EditarCamion/{{ camion[0] }}" class="btn btn-success">Editar</a>
                 <a href="/BorrarCamion/{{ camion[0] }}/delete" class="btn btn-danger">Borrar</a>

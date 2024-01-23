@@ -3,24 +3,28 @@
 <form action="/EditarProvee/{{ proveedor[0] }}/update" method="post" style="justify-content: center;">
     <h2 style="text-align: center;">Actualizar datos del Proveedor</h2>
     <div class="form-group" style="justify-content: center;">
-        <label for="NombreProveedor">Nombre Proveedor:</label>
+        <label for="NombreProveedor">Nombre del Proveedor:</label>
         <input type="text" id="NombreProveedor" name="NombreProveedor" value="{{ proveedor[1] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
-        <label for="CIpro">CI:</label>
-        <input type="number" id="CIpro" name="CIpro" value="{{ proveedor[2] }}">
-    </div>
-    <div class="form-group" style="justify-content: center;">
         <label for="RUC">RUC:</label>
-        <input type="text" id="RUC" name="RUC" value="{{ proveedor[3] }}">
+        <input type="text" id="RUC" name="RUC" value="{{ proveedor[2] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
         <label for="Direccion">Dirección:</label>
-        <input type="text" id="Direccion" name="Direccion" value="{{ proveedor[4] }}">
+        <input type="text" id="Direccion" name="Direccion" value="{{ proveedor[3] }}">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="Domicilio">Domicilio:</label>
+        <input type="text" id="Domicilio" name="Domicilio" value="{{ proveedor[4] }}">
     </div>
     <div class="form-group" style="justify-content: center;">
         <label for="Telefono">Teléfono:</label>
         <input type="text" id="Telefono" name="Telefono" value="{{ proveedor[5] }}">
+    </div>
+    <div class="form-group" style="justify-content: center;">
+        <label for="Email">Correo:</label>
+        <input type="email" id="Email" name="Email" value="{{ proveedor[6] }}">
     </div>
     <button type="submit" class="btn btn-success" style="justify-content: center;">Guardar cambios</button>
 </form>

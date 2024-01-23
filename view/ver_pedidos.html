@@ -3,9 +3,10 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Nombre del Proveedor</th>
-            <th scope="col">Descripcion del Pedido</th>
+            <th scope="col">Nombre del Material</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Caracteristicas</th>
             <th scope="col">Forma del Pago</th>
             <th scope="col">Operaciones</th>
         </tr>
@@ -13,10 +14,11 @@
     <tbody>
         {% for pedido in pedidos %}
         <tr>
-            <td>{{ pedido[0] }}</td>
             <td>{{ pedido[1] }}</td>
             <td>{{ pedido[2] }}</td>
             <td>{{ pedido[3] }}</td>
+            <td>{{ pedido[4] }}</td>
+            <td>{{ pedido[5] }}</td>
             <td>
                 <a href="/EditarPedido/{{ pedido[0] }}" class="btn btn-success">Editar</a>
                 <a href="#" onclick="imprimirPedido('{{ pedido[0] }}')" class="btn btn-warning">Imprimir</a>
@@ -33,13 +35,15 @@
         ventanaImpresion.document.write('<html><head><title>Pedido</title></head><body>');
         ventanaImpresion.document.write('<h1>Datos del Pedido</h1>');
         ventanaImpresion.document.write('<table class="table">');
-        ventanaImpresion.document.write('<thead class="thead-dark"><tr><th scope="col">Id</th><th scope="col">Nombre del Proveedor</th><th scope="col">Descripción del Pedido</th><th scope="col">Forma del Pago</th></tr></thead>');
+        ventanaImpresion.document.write('<thead class="thead-dark"><tr><th scope="col">Nombre del Proveedor</th><th scope="col">Nombre del Material</th><th scope="col">Cantidad</th><th scope="col">Caracteristicas</th><th scope="col">Forma del Pago</th></tr></thead>');
         ventanaImpresion.document.write('<tbody>');
         // Agregar el pedido seleccionado a la ventana de impresión
         ventanaImpresion.document.write('<tr>');
         ventanaImpresion.document.write('<td>' + idPedido + '</td>');
         ventanaImpresion.document.write('<td>' + document.getElementById('nombreProveedor' + idPedido).innerHTML + '</td>');
-        ventanaImpresion.document.write('<td>' + document.getElementById('descripcionPedido' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('nombremat' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('cantidad' + idPedido).innerHTML + '</td>');
+        ventanaImpresion.document.write('<td>' + document.getElementById('caracteristicas' + idPedido).innerHTML + '</td>');
         ventanaImpresion.document.write('<td>' + document.getElementById('formaPago' + idPedido).innerHTML + '</td>');
         ventanaImpresion.document.write('</tr>');
         ventanaImpresion.document.write('</tbody></table>');

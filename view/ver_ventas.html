@@ -5,7 +5,9 @@
         <tr>
             <th scope="col">Nombre del cliente</th>
             <th scope="col">Material</th>
-            <th scope="col">Detalles</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Metodo de Pago</th>
             <th scope="col">Operaciones</th>
         </tr>
     </thead>
@@ -15,8 +17,9 @@
             <td>{{ venta[1] }}</td>
             <td>{{ venta[2] }}</td>
             <td>{{ venta[3] }}</td>
+            <td>{{ venta[4] }}</td>
+            <td>{{ venta[5] }}</td>
             <td>
-                <a href="#" class="btn btn-warning">Imprimir Factura</a>
                 <a href="/BorrarVenta/{{ venta[0] }}/delete" class="btn btn-danger">Borrar</a>
             </td>
         </tr>

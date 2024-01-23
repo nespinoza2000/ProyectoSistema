@@ -2,11 +2,21 @@
 {% block content %}
 <form action="/EditarPedido/{{ pedido[0] }}/update" method="post" style="justify-content: center;">
     <div class="form-group">
-        <label for="DescripPedido" class="col-sm-4 row-form-label" style="text-align: center;">Descripción del
-            Pedido:</label>
+        <label for="NombreMat" class="col-sm-4 row-form-label" style="text-align: center;">Nombre del material</label>
         <div class="col-sm-5">
-            <textarea class="form-control" id="DescripPedido" name="DescripPedido"
-                rows="3">{{ descripcion_pedido_actual }}</textarea>
+            <input type="text" id="NombreMat" name="NombreMat" value="{{ pedido[2] }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Cantidad" class="col-sm-4 row-form-label" style="text-align: center;">Cantidad</label>
+        <div class="col-sm-5">
+            <input type="text" id="Cantidad" name="Cantidad" value="{{ pedido[3] }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Caracteristicas" class="col-sm-4 row-form-label" style="text-align: center;">Caracteristicas</label>
+        <div class="col-sm-5">
+            <input type="text" id="Caracteristicas" name="Caracteristicas" value="{{ pedido[4] }}">
         </div>
     </div>
     <div class="form-check">

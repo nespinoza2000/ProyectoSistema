@@ -1,0 +1,26 @@
+{% extends "components/layout.html" %}
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Capital</th>
+            <th scope="col">Activos de la empresa</th>
+            <th scope="col">Pasivos de la empresa</th>
+            <th scope="col">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for financiera in finanzas %}
+        <tr>
+            <td>{{ financiera[1] }}</td>
+            <td>{{ financiera[2] }}</td>
+            <td>{{ financiera[3] }}</td>
+            <td>
+                <a href="/BorrarFinanza/{{ financiera[0] }}/delete" class="btn btn-danger">Borrar Datos</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/back-to-user" class="btn btn-primary">Volver</a>
+{% endblock %}

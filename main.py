@@ -1,14 +1,18 @@
+from pstats import Stats
 from fastapi import FastAPI, HTTPException, Request, Response, Form
+from fastapi.params import Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from controller.user import User
 from lib.check_passw import check_user
 from model.handle_db import HandleDB
-import mysql.connector
+from fastapi.security import OAuth2PasswordBearer
+from datetime import datetime
 
 app = FastAPI()
 
 template = Jinja2Templates(directory="./view")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @app.get("/", response_class=HTMLResponse)
 def root(req: Request):
@@ -148,13 +152,17 @@ async def cargar_cli(
     NombreCliente: str = Form(...),
     RUC: str = Form(...),
     direccion: str = Form(...),
-    telefono: int = Form(...)
+    domicilio: str = Form(...),
+    telefono: int = Form(...),
+    email: str = Form(...)
 ):
     data_cliente = {
         "NombreCliente": NombreCliente,
         "RUC": RUC,
         "Direccion": direccion,
-        "Telefono": telefono
+        "Domicilio": domicilio,
+        "Telefono": telefono,
+        "Email": email
     }
     handle_db = HandleDB()
     cliente_registrado = handle_db.insert_cliente(data_cliente)  # Solo una vez
@@ -180,12 +188,14 @@ def show_edit_cliente(req: Request, IdCliente: int):
     return template.TemplateResponse("editar_cliente.html", {"request": req, "cliente": cliente})
 
 @app.post("/EditarCliente/{IdCliente}/update")
-def update_cliente(req: Request, IdCliente: int, NombreCliente: str = Form(...), RUC: str = Form(...), Direccion: str = Form(...), Telefono: int = Form(...)):
+def update_cliente(req: Request, IdCliente: int, NombreCliente: str = Form(...), RUC: str = Form(...), Direccion: str = Form(...), Domicilio: str = Form(...), Telefono: int = Form(...), Email: str = Form(...)):
     new_data_cliente = {
         "NombreCliente": NombreCliente,
         "RUC": RUC,
         "Direccion": Direccion,
-        "Telefono": Telefono
+        "Domicilio": Domicilio,
+        "Telefono": Telefono,
+        "Email": Email
     }
     handle_db = HandleDB()
     handle_db.update_cliente(IdCliente, new_data_cliente)  # Actualización del cliente con su ID correspondiente
@@ -209,17 +219,19 @@ def registro_pro(req: Request):
 async def cargar_pro(
     req: Request, 
     nombrepro: str = Form(...), 
-    cipro: int = Form(...), 
     rspro: str = Form(...), 
-    Direccion: str = Form(...), 
-    Telefono: str = Form(...)
+    Direccion: str = Form(...),
+    Domicilio: str = Form(...),
+    Telefono: str = Form(...),
+    Email: str = Form(...)
 ):
     data_provee = {
         "NombreProveedor": nombrepro,
-        "CIpro": cipro,
         "RUC": rspro,
         "Direccion": Direccion,
-        "Telefono": Telefono
+        "Domicilio": Domicilio,
+        "Telefono": Telefono,
+        "Email": Email
     }
     handle_db = HandleDB()
     proveedor_registrado = handle_db.insert_proveedor(data_provee) # Solo una vez
@@ -249,17 +261,19 @@ def update_prove(
     req: Request,
     IdPro: int,
     NombreProveedor: str = Form(...),
-    CIpro: int = Form(...),
     RUC: str = Form(...),
     Direccion: str = Form(...),
-    Telefono: str = Form(...),
+    Domicilio: str = Form(...),
+    Telefono: int = Form(...),
+    Email: str = Form(...)
 ):
     new_data_provee = {
         "NombreProveedor": NombreProveedor,
-        "CIpro": CIpro,
         "RUC": RUC,
         "Direccion": Direccion,
+        "Domicilio": Domicilio,
         "Telefono": Telefono,
+        "Email": Email
     }
     handle_db = HandleDB()
     handle_db.update_proveedor(IdPro, new_data_provee)
@@ -285,12 +299,16 @@ async def cargar_cami(
     nrocami: str = Form(...),
     marcacami: str = Form(...),
     modelocami: str = Form(...),
+    nrochasis: str = Form(...),
+    chapa: str = Form(...),
     tipo: str = Form(...)
 ):
     data_camion = {
         "NroCamion": nrocami,
         "Marca": marcacami,
         "Modelo": modelocami,
+        "Chasis": nrochasis,
+        "Chapa": chapa,
         "Estado": tipo
     }
     handle_db = HandleDB()
@@ -323,12 +341,16 @@ def update_cami(
     NroCamion: str = Form(...),
     Marca: str = Form(...),
     Modelo: str = Form(...),
+    Chasis: str = Form(...),
+    Chapa: str = Form(...),
     Estado: str = Form(...)
 ):
     new_data_cami = {
         "NroCamion": NroCamion,
         "Marca": Marca,
         "Modelo": Modelo,
+        "Chasis": Chasis,
+        "Chapa": Chapa,
         "Estado": Estado
     }
     handle_db = HandleDB()
@@ -357,12 +379,16 @@ def pedidosProv(req: Request):
 def cargarpedido(
     req: Request, 
     nombrepro: str = Form(...), 
-    pedido_mat: str = Form(...), 
+    nombremat: str = Form(...),
+    cantidad: int = Form(...),
+    caracteristicas: str = Form(...),
     formapago: str = Form(...)
 ):
     data_pedido = {
         "NombrePro": nombrepro,
-        "DescripPedido": pedido_mat,
+        "NombreMat": nombremat,
+        "Cantidad": cantidad,
+        "Caracteristicas": caracteristicas,
         "FormaPago": formapago
     }
     handle_db = HandleDB()
@@ -389,11 +415,15 @@ def show_edit_pedido(req: Request, IdPedido: int):
 def update_pedido(
     req: Request,
     IdPedido: int,
-    DescripPedido: str = Form(...),
+    NombreMat: str = Form(...),
+    Cantidad: int = Form(...),
+    Caracteristicas: str = Form(...),
     formapago: str = Form(...)
 ):
     new_data_pedido = {
-        "DescripPedido": DescripPedido,
+        "NombreMat": NombreMat,
+        "Cantidad": Cantidad,
+        "Caracteristicas": Caracteristicas,
         "FormaPago": formapago
     }
     handle_db = HandleDB()
@@ -415,21 +445,23 @@ def ComprasProv(req: Request):
     handle_db = HandleDB()
     # Obtener nombres de proveedores desde la base de datos
     nombres_proveedores = handle_db.get_nombres_proveedores()
-    # Obtener nombres y precios de materiales
-    nombres_materiales_con_precio = handle_db.get_nombres_materiales_con_precio()
-    return template.TemplateResponse("compras.html", {"request": req, "nombres_proveedores": nombres_proveedores, "nombres_materiales_con_precio": nombres_materiales_con_precio})
+    return template.TemplateResponse("compras.html", {"request": req, "nombres_proveedores": nombres_proveedores})
 
 @app.post("/ImprimirCompra")
 def ImprimirCompra(
     req: Request,
     nombrepro: str = Form(...),
-    nombremat: str = Form(...),
-    descripcion: str = Form(...)
+    material: str = Form(...),
+    descripcion: str = Form(...),
+    detalle: str = Form(...),
+    formapago: str = Form(...)
 ):
     data_compra = {
         "Proveedor": nombrepro,
-        "DetalleCompra": nombremat,
-        "DescripCompra": descripcion
+        "Material": material,
+        "Descripcion": descripcion,
+        "Detalle": detalle,
+        "Pago": formapago
     }
     handle_db = HandleDB()
     compra_imprimida = handle_db.insert_compra(data_compra)
@@ -462,12 +494,14 @@ def PagosProv(req: Request):
 async def procesar_pago(
     req: Request,
     nombrepro: str = Form(...),
-    monto: float = Form(...),
+    actividad: str = Form(...),
+    monto: int = Form(...),
     forma_pago: str = Form(...),  # Este campo es para la forma de pago
 ):
     # Lógica para procesar el pago en la base de datos
     data_pago = {
         "Proveedor": nombrepro,
+        "Actividad": actividad,
         "Monto": monto,
         "FormaPago": forma_pago,
     }
@@ -549,21 +583,28 @@ def VentaCli(req: Request):
     handle_db = HandleDB()
     # Obtener nombres de los clientes desde la base de datos
     nombres_clientes = handle_db.get_name_cliente()
-    # Obtener nombres, precios y cantidades de materiales
-    nom_mat_pre_cant = handle_db.get_name_mat_pre_cant()
-    return template.TemplateResponse("ventas.html", {"request": req, "nombres_clientes": nombres_clientes, "nom_mat_pre_cant": nom_mat_pre_cant})
+    # Obtener nombres y descripciones de materiales
+    nom_mat_desc = handle_db.get_name_mat_desc()
+    # Obtener los precios de los materiales
+    nom_mat_pre = handle_db.get_name_mat_pre()
+    # Obtener las cantidades de los materiales
+    return template.TemplateResponse("ventas.html", {"request": req, "nombres_clientes": nombres_clientes, "nom_mat_desc": nom_mat_desc, "nom_mat_pre": nom_mat_pre})
 
 @app.post("/ProcesarVenta")
 def processing_sell(
     req: Request,
     NombreCliente: str = Form(...),
     nombremat: str = Form(...),
-    especifi: str = Form(...)
+    cantidad: str = Form(...),
+    precio: int = Form(...),
+    forma_pago_v: str = Form(...)
 ):
     data_venta = {
         "Cliente": NombreCliente,
         "Material": nombremat,
-        "Detalle": especifi
+        "Cantidad": cantidad,
+        "Precio": precio,
+        "FormaPago": forma_pago_v
     }
     handle_db = HandleDB()
     try:
@@ -572,13 +613,19 @@ def processing_sell(
             return template.TemplateResponse("venta_exitosa.html", {"request": req, "data_user": True, "proceso_venta": proceso_venta})
     except Exception as e:
         print(f"Error en el procesamiento de la venta: {e}")
-    return template.TemplateResponse("venta_fallida.html", {"request": req, "data_user": True})
 
 @app.get("/verVenta")
 def verVenta(req: Request):
     handle_db = HandleDB()
     ventas = handle_db.get_ventas()
     return template.TemplateResponse("ver_ventas.html", {"request": req, "ventas": ventas})
+
+@app.get("/ImprimirFactura/{id_venta}")
+def imprimir_factura(req: Request, id_venta: int):
+    handle_db = HandleDB()
+    factura_html = handle_db.generar_factura(id_venta)
+    # Devolver el contenido HTML de la factura
+    return HTMLResponse(content=factura_html, status_code=200)
 
 @app.get("/BorrarVenta/{IdVenta}/delete")
 def delete_venta(IdVenta: int):
@@ -594,8 +641,34 @@ def delete_venta(IdVenta: int):
 def menu_ineg(req: Request): #Nota al margen ineg es de Ingreso y Egreso
     return template.TemplateResponse("menu.html", {"request": req})
 
+@app.post("/Calculo")
+def calculation(
+    req: Request,
+    Capital: int = Form(...),
+    Activo: int = Form(...),
+    Pasivo: int = Form(...)
+):
+    data_ineg = {
+        "Capital": Capital,
+        "Activo": Activo,
+        "Pasivo": Pasivo
+    }
+    handle_db = HandleDB()
+    financiera_ineg = handle_db.insert_calc(data_ineg) #Solo una vez
+    del handle_db
+    response = template.TemplateResponse("menu_registrado.html", {"request": req, "data_user": True, "financiera_ineg": financiera_ineg})
+    response.set_cookie(key="session", value="some_session_token")
+    return response
 
+@app.get("/verFinanzas")
+def showBalance(req: Request):
+    handle_db = HandleDB()
+    finanzas = handle_db.get_financiera()
+    return template.TemplateResponse("ver_menu.html", {"request": req, "finanzas": finanzas})
 
-
-
-
+@app.get("/BorrarFinanza/{IdFinanza}/delete")
+def delete_finanza(IdFinanza: int):
+    handle_db = HandleDB()
+    handle_db.delete_finanza(IdFinanza)
+    del handle_db
+    return RedirectResponse(url="/verFinanzas", status_code=302)
